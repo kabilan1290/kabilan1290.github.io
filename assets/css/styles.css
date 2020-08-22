@@ -57,7 +57,7 @@ body{
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
   color: var(--second-color);
-  cursor: url("https://img.icons8.com/fluent/48/000000/cursor--v2.png"), auto;
+  cursor: url("https://img.icons8.com/cute-clipart/2x/cursor.png"), auto;
 }
 h1,h2,p{
   margin: 0;
