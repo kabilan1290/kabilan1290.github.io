@@ -18,7 +18,7 @@ function test2(){
 
   	var x = document.getElementById('search').value;
  	var final ="";	
-
+ 	var h = "https://";
  	 for (var i = 0; i < x.length; i++) {
  	 	var temp = x;
 
@@ -26,7 +26,8 @@ function test2(){
  	 			n = obj[x.charAt(i)]
  	 			var_i = x.charAt(i)
  	 			t=x.replace(var_i,n);
- 	 			final =final+t+("\n")+("\n")
+ 	 			
+ 	 			final =final+h+t+("\n")+("\n")
 
 	 	 	}
 	
