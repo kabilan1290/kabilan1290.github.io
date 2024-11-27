@@ -6,10 +6,14 @@
   <title>Tools</title>
 </head>
 <style>
+html{
+  --color-secondary: #30302f;
+}
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
     background-color: #2c2c2c;
     color: #fff;
 }
@@ -90,19 +94,21 @@ body {
 }
 .green {background-color: #1ABC9C; grid-column: span 1; grid-row: span 3; }
 .red { background-color: #E74C3C; grid-column: span 1; grid-row: span 2; }
+.red2 { background-color: #0ABABA; grid-column: span 1; grid-row: span 2; }
+
 .cyan { background-color: #1ABC9C; grid-column: span 1; grid-row: span 1; }
 .gold { background-color: #F39C12; grid-column: span 2; grid-row: span 1; }
 .white { background-color: #ECF0F1; color: #333; grid-column: span 3; grid-row: span 1; }
 
 h2 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     font-weight: bold;
 }
 
 p {
     margin: 10px 0 0 0;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.8);
 }
@@ -182,6 +188,62 @@ p {
 /* else-------------------- else */
 
 
+
+
+.hashtag {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+}
+
+.keyword {
+  font-family: "Open Sans", sans-serif;
+}
+
+button.topics {
+  font-size: 0.7em;
+  text-align: center;
+  text-transform: lowercase;
+  vertical-align: middle;
+  padding: 6px 10px;
+  margin-top: 12px;
+  color: #636363;
+  background-color: #fff;
+  border: solid 2px #636363;
+  box-shadow: rgba(77, 77, 77, 0.94) 5px -4px 0px 0px;
+  border-radius: 10px 10px 10px 0px;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
+}
+
+button.topics.alt1 {
+  font-size: 0.7em;
+  text-align: center;
+  text-transform: lowercase;
+  vertical-align: middle;
+  padding: 6px 10px;
+  margin-top: 6px;
+  color: #fff;
+  background-color: #30302f;;
+  border: solid 2px #fff;
+  box-shadow: rgba(128, 128, 128, 0.94) 5px -4px 0px 0px;
+  border-radius: 10px 10px 10px 0px;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
+}
+
+button.topics:hover {
+  box-shadow: rgba(77, 77, 77, 0.94) 0px 0px 0px 0px;
+}
+
+button.topics:active {
+  transform: translateY(1.5px);
+}
+
+.topics:hover .keyword {
+  text-decoration: underline;
+}
+
+
 </style>
 <body>
 
@@ -211,21 +273,21 @@ p {
     <div class="item red">
       <div class="content">
         <h2>img,script</h2>
-        <p>HTML NAMESPACE</p>
-        <p>Typical XSS Payloads.</p>
+    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+        <p>Typical HTML elements which can carry XSS Payloads.</p>            
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>image</h2>
-        <p>HTML,SVG,MATH NAMESPACE</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">MATH NAMESPACE</span></button>
         <p> In HTML treated as img, valid SVG or MathML element.</p>
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>div,span</h2>
-        <p>HTML NAMESPACE</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Basic HTML element,terminate foriegn content.</p>
         
       </div>
@@ -233,51 +295,51 @@ p {
     <div class="item white">
       <div class="content">
         <h2>object</h2>
-        <p>HTML NAMESPACE</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Basic HTML element.
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>form</h2>
-        <p>HTML NAMESPACE</p>
-        <p>form elements cannot be nested enforced by parsing specification</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Form elements cannot be nested enforced by parsing specification.</p>
       </div>
     </div>
     <div class="item red">
       <div class="content">
         <h2>dfn,header</h2>
-        <p>HTML NAMESPACE</p>
-        <p>both cannot be nested,not enforced by parsing specification</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Both cannot be nested,not enforced by parsing specification.</p>
       </div>
     </div>
     <div class="item green ">
       <div class="content">
         <h2>p</h2>
-        <p>HTML NAMESPACE</p>
-        <p>terminates foriegn content,optional end tag</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Terminates foriegn content,optional end tag.</p>
       </div>
     </div>
-    <div class="item red">
+    <div class="item red2">
       <div class="content">
         <h2>br,embed</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no end tag, no content allowed,terminate foriegn content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button>
+        <p>No end tag, no content allowed,terminate foriegn content.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>input</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no end tag,no content allowed</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button>
+        <p>No end tag,no content allowed.</p>
       </div>
     </div>
     
     <div class="item gold">
       <div class="content">
         <h2>a</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no interactive content allowed,example : iframe,not enforced by parsing sepcification</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>No interactive content allowed,example : iframe,not enforced by parsing sepcification.</p>
         
       </div>
     </div>
@@ -287,74 +349,74 @@ p {
         <div class="item red">
       <div class="content">
         <h2>noscript</h2>
-        <p>HTML NAMESPACE</p>
-        <p>parsed differently depending on scripting flag : either HTML or javascript content.</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+        <p>Parsed differently depending on scripting flag : either HTML or javascript content.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>table</h2>
-        <p>HTML NAMESPACE</p>
-        <p>open's a table,parsing specification enforces no nesting,terminates foriegn content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Open's a table,parsing specification enforces no nesting,terminates foriegn content.</p>
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>td,tr,colgroup</h2>
-        <p>HTML NAMESPACE</p>
-        <p>restrictive content,together they make up a table</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Restrictive content,together they make up a table.</p>
         
       </div>
     </div>
     <div class="item white">
       <div class="content">
         <h2>select</h2>
-        <p>HTML NAMESPACE</p>
-        <p>only option,optgroup and script supporting content are allowed,special parsing rules when inside table.
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Only option,optgroup and script supporting content are allowed,special parsing rules when inside table.
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>option</h2>
-        <p>HTML NAMESPACE</p>
-        <p>restriction on where it can occur,depending on attribute values allwed content changes </p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Restriction on where it can occur,depending on attribute values allwed content changes.</p>
       </div>
     </div>
     <div class="item red">
       <div class="content">
         <h2>textarea</h2>
-        <p>HTML NAMESPACE</p>
-        <p>only text content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">escapable rawtext element</span></button>
+        <p>Only text content</p>
       </div>
     </div>
     <div class="item green ">
       <div class="content">
         <h2>keygen</h2>
-        <p>HTML NAMESPACE</p>
-        <p>not supported anymore,no content,no end tag</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Not supported anymore,no content,no end tag.</p>
       </div>
     </div>
     <!---->
     <div class="item red">
       <div class="content">
         <h2>xmp</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no element specification anymore,still has parsing rules,used to render markup as text without executing it.</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+        <p>No element specification anymore,still has parsing rules,used to render markup as text without executing it.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>frameset</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no element specification anymore,still has parsing rules.</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>No element specification anymore,still has parsing rules.</p>
       </div>
     </div>
     
     <div class="item gold">
       <div class="content">
         <h2>li,ul</h2>
-        <p>HTML NAMESPACE</p>
-        <p>Make up a list,allowed to contain script supporting elements,terminate foriegn content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Make up a list,allowed to contain script supporting elements,terminate foriegn content.</p>
         
       </div>
     </div>
@@ -368,74 +430,79 @@ p {
             <div class="item red">
       <div class="content">
         <h2>pre,var</h2>
-        <p>HTML NAMESPACE</p>
-        <p>Only allowed to contain phrasing content,terminate foriegn content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Only allowed to contain phrasing content,terminate foriegn content.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>dl</h2>
-        <p>HTML NAMESPACE</p>
-        <p>Restricted content model,terminates foriegn content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Restricted content model,terminates foriegn content.</p>
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>dt</h2>
-        <p>HTML NAMESPACE</p>
-        <p>shall only occur inside dl,terminates forign content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
+        <p>Shall only occur inside dl,terminates forign content.</p>
         
       </div>
     </div>
     <div class="item white">
       <div class="content">
         <h2>plaintext</h2>
-        <p>HTML NAMESPACE</p>
-        <p>deprecated.Renders everything below as plain text,can not be closed.
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"> plaintext state element</span></button>
+        <p>Deprecated.Renders everything below as plain text,can not be closed.
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>noframes,noembed</h2>
-        <p>HTML NAMESPACE</p>
-        <p>no element specification anymore,still have parsing rules,contain raw text element</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+        <p>No element specification anymore,still have parsing rules,contain raw text element.</p>
       </div>
     </div>
     <div class="item red">
       <div class="content">
         <h2>iframe</h2>
-        <p>HTML NAMESPACE</p>
-        <p>iframe element specification says no content allowed,but parsing specification says raw text content</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">rawtext element</span></button>
+        <p>Iframe element specification says no content allowed,but parsing specification says raw text content.</p>
       </div>
     </div>
     <div class="item green ">
       <div class="content">
         <h2>svg</h2>
-        <p>SVG NAMESPACE</p>
-        <p>namespace transition from HTML to SVG</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+        <p>Namespace transition from HTML to SVG.</p>
       </div>
     </div>
     <!---->
     <div class="item red">
       <div class="content">
         <h2>foriegnObject,desc,path</h2>
-        <p>SVG NAMESPACE</p>
-        <p>allow to embed HTML segments inside a SVG.</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+        <p>Allow to embed HTML segments inside a SVG.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>math</h2>
-        <p>MathML NAMESPACE</p>
-        <p>namespace transistion from HTML to MathML</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+        <p>Namespace transistion from HTML to MathML.</p>
       </div>
     </div>
     
     <div class="item gold">
       <div class="content">
-        <h2>mi,mo,mn,ms,mtext,mglyph,mtext,annotation-xml</h2>
-        <p>MathML NAMESPACE</p>
-        <p>allow to embed HTML segments inside MathML</p>
+        <h2>mi,mo,mn,ms,mtext</h2>
+        <h2>mglyph,mtext,annotation-xml</h2>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+        <p>Allow to embed HTML segments inside MathML.</p>
         
       </div>
     </div>
@@ -443,18 +510,18 @@ p {
     <div class="item cyan">
       <div class="content">
         <h2>style,font</h2>
-        <p>HTML,SVG NAMESPACE</p>
-        <p>text content when in HTML,otherwise markup.</p>
-        <p>deprecated for both HTML and SVG
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML,SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">rawtext element</span></button>
+        <p>Text content when in HTML,otherwise markup.</p>
+        <p>Deprecated for both HTML and SVG.
       </div>
     </div>
 
     <div class="item white">
       <div class="content">
         <h2>title</h2>
-        <p>HTML,SVG NAMESPACE</p>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">escapable rawtext element</span></button>
         <p>HTML namespace - text content,singleton: not enforced by parsing specification.
-        <p>SVG namespace - can contain markup
+        <p>SVG namespace - can contain markup.
       </div>
     </div>
 
