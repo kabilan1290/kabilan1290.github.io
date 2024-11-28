@@ -156,8 +156,11 @@ input:focus{
 .green {background-color: #1ABC9C; grid-column: span 1; grid-row: span 3; }
 .red { background-color: #E74C3C; grid-column: span 1; grid-row: span 2; }
 .red2 { background-color: #0ABABA; grid-column: span 1; grid-row: span 2; }
+.green2 {background-color: #E74C3C; grid-column: span 1; grid-row: span 3; }
 
 .cyan { background-color: #1ABC9C; grid-column: span 1; grid-row: span 1; }
+.cyan2 { background-color: #2F2F2F; grid-column: span 1; grid-row: span 1; }
+
 .gold { background-color: #F39C12; grid-column: span 2; grid-row: span 1; }
 .white { background-color: #ECF0F1; color: #333; grid-column: span 3; grid-row: span 1; }
 
@@ -438,8 +441,15 @@ button.topics:active {
   <div class="grid-container">
     <div class="item red">
       <div class="content">
-        <h2>img,script</h2>
-    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
+        <h2>img</h2>
+    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
+        <p>Typical HTML elements which can carry XSS Payloads.</p>            
+      </div>
+    </div>
+        <div class="item cyan2">
+      <div class="content">
+        <h2>script</h2>
+    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Typical HTML elements which can carry XSS Payloads.</p>            
       </div>
     </div>
@@ -448,6 +458,13 @@ button.topics:active {
         <h2>image</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">MATH NAMESPACE</span></button>
         <p> In HTML treated as img, valid SVG or MathML element.</p>
+      </div>
+    </div>
+        <div class="item green2">
+      <div class="content">
+        <h2>template</h2>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#the-template-element-2">template element</a></span></button>
+        <p>By default, the element's content is not rendered,Can render content in other SVG or MathML namespaces.</p>
       </div>
     </div>
     <div class="item gold">
@@ -664,8 +681,8 @@ button.topics:active {
     
     <div class="item gold">
       <div class="content">
-        <h2>mi,mo,mn,ms,mtext</h2>
-        <h2>mglyph,mtext,annotation-xml</h2>
+        <h2>mi,mo,mn,mtext,malignmark</h2>
+        <h2>mglyph,ms,mtext,annotation-xml</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
             <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Allow to embed HTML segments inside MathML.</p>
