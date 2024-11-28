@@ -314,7 +314,36 @@ body.menu-toggled > .meta-link > span {
   }
 }
 
+/* Responsive grid for mobile devices */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Reduce columns to 2 for smaller screens */
+        grid-template-rows: auto; /* Allow rows to adjust based on content */
+        gap: 8px; /* Slightly smaller gap for compact layout */
+        height: auto; /* Adjust height for scrolling */
+    }
 
+    .green, .red, .red2, .cyan, .gold, .white {
+        grid-column: span 2; /* Span full width for better visibility on mobile */
+        grid-row: auto; /* Let rows adjust dynamically */
+    }
+}
+
+/* For very small devices (phones in portrait mode) */
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Single column layout for the smallest screens */
+        gap: 5px; /* Smaller gap for compact layout */
+    }
+
+    .item {
+        padding: 15px; /* Reduce padding for smaller screen real estate */
+    }
+
+    .green, .red, .red2, .cyan, .gold, .white {
+        grid-column: span 1; /* Full width per item */
+    }
+}
 
 /* else-------------------- else */
 
