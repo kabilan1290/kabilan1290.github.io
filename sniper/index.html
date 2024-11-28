@@ -24,13 +24,37 @@ body {
 
 }
 
+ .hover-text {
+            display: inline-block;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            position: relative;
+        }
+
+ .chatbox {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 5px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            border-radius: 8px;
+        }
+
+
 input{
   position: relative;
   transition: width 0.4s ease-out;
   font-family: montserrat;
   border-radius: 100px;
   border: 1.5px solid #fff;
-  margin-top: 30px;
+  margin-top: 27px;
   padding: 10px 10px;
   background-color: var(--background);
   color: white;
@@ -51,6 +75,7 @@ input:focus{
   width: 40vw;
   box-shadow: 0px 0px 10px #fff1;
 }
+
 
 .tab-bar {
     display: flex;
@@ -371,7 +396,8 @@ button.topics:active {
 
 <div id="grid" class="tab-content active">
 
-
+<p id="heading">• HTML5 added new ways to include special content on web pages, like graphics with &lt;svg&gt; or math formulas with &lt;math&gt;. These elements are treated differently by web browsers than regular HTML, which means they follow their own set of rules and have their own namespace.
+<br><br>• I have retrieved elements with their behaviour towards mutation from the paper <a href="https://www.ias.cs.tu-bs.de/publications/parsing_differentials.pdf">Parse Me, Baby, One More Time: Bypassing HTML Sanitizer via Parsing Differentials.</a></p>
   <div class="grid-container">
     <div class="item red">
       <div class="content">
@@ -391,7 +417,7 @@ button.topics:active {
       <div class="content">
         <h2>div,span</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Basic HTML element,terminate foriegn content.</p>
+        <p>Basic HTML element,terminate foreign content.</p>
         
       </div>
     </div>
@@ -420,14 +446,14 @@ button.topics:active {
       <div class="content">
         <h2>p</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Terminates foriegn content,optional end tag.</p>
+        <p>Terminates foreign content,optional end tag.</p>
       </div>
     </div>
     <div class="item red2">
       <div class="content">
         <h2>br,embed</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button>
-        <p>No end tag, no content allowed,terminate foriegn content.</p>
+        <p>No end tag, no content allowed,terminate foreign content.</p>
       </div>
     </div>
     <div class="item cyan">
@@ -460,7 +486,7 @@ button.topics:active {
       <div class="content">
         <h2>table</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Open's a table,parsing specification enforces no nesting,terminates foriegn content.</p>
+        <p>Open's a table,parsing specification enforces no nesting,terminates foreign content.</p>
       </div>
     </div>
     <div class="item gold">
@@ -489,7 +515,7 @@ button.topics:active {
       <div class="content">
         <h2>textarea</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">escapable rawtext element</span></button>
-        <p>Only text content</p>
+        <p>Only text content.</p>
       </div>
     </div>
     <div class="item green ">
@@ -519,7 +545,7 @@ button.topics:active {
       <div class="content">
         <h2>li,ul</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Make up a list,allowed to contain script supporting elements,terminate foriegn content.</p>
+        <p>Make up a list,allowed to contain script supporting elements,terminate foreign content.</p>
         
       </div>
     </div>
@@ -534,21 +560,21 @@ button.topics:active {
       <div class="content">
         <h2>pre,var</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Only allowed to contain phrasing content,terminate foriegn content.</p>
+        <p>Only allowed to contain phrasing content,terminate foreign content.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>dl</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Restricted content model,terminates foriegn content.</p>
+        <p>Restricted content model,terminates foreign content.</p>
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>dt</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
-        <p>Shall only occur inside dl,terminates forign content.</p>
+        <p>Shall only occur inside dl,terminates foreign content.</p>
         
       </div>
     </div>
@@ -584,7 +610,7 @@ button.topics:active {
     <!---->
     <div class="item red">
       <div class="content">
-        <h2>foriegnObject,desc,path</h2>
+        <h2>foreignObject,desc,path</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
             <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
         <p>Allow to embed HTML segments inside a SVG.</p>
@@ -623,6 +649,7 @@ button.topics:active {
       <div class="content">
         <h2>title</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">escapable rawtext element</span></button>
+
         <p>HTML namespace - text content,singleton: not enforced by parsing specification.
         <p>SVG namespace - can contain markup.
       </div>
@@ -665,18 +692,25 @@ document.querySelector("h1").onmouseover = event => {
 function searchItems() {
   const input = document.getElementById('searchBar').value.toLowerCase();
   const items = document.querySelectorAll('.item');
+  const head = document.getElementById('heading')
 
   items.forEach(item => {
     const firstLine = item.querySelector('h2') ? item.querySelector('h2').textContent.toLowerCase() : '';
-    console.log(firstLine); // Logs the first line (the content of the <h2> element)
+ // Logs the first line (the content of the <h2> element)
 
     if (firstLine.includes(input)) {
       item.style.display = 'block';
+      head.style.display = 'block';
     } else {
+      head.style.display = 'none';
       item.style.display = 'none';
     }
   });
 }
   </script>
+
+
+
+
 </body>
 </html>
