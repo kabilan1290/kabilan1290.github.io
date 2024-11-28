@@ -111,7 +111,7 @@ input:focus{
 
 .tab-content {
     display: none;
-    padding: 80px 20px 20px; /* Adjusted for fixed tab bar */
+    padding: 0px 20px 20px; /* Adjusted for fixed tab bar */
     height: calc(100vh - 100px);
     overflow-y: auto;
 }
@@ -147,7 +147,9 @@ input:focus{
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
-
+#searchBar{
+  margin-bottom: 30px;
+}
 .content {
     text-align: center;
 }
@@ -170,6 +172,11 @@ p {
     font-size: 1.3rem;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.8);
+}
+
+a { 
+    color:white;
+    text-decoration:none;
 }
 
 .white p {
@@ -391,18 +398,19 @@ button.topics:active {
             event.currentTarget.classList.add('active');
         }
       </script>
+     
 <h1 data-value="MUTATION SNIPER">MUTATION SNIPER</h1>
   <input type="text" id="searchBar" placeholder="Search" onkeyup="searchItems()">
 
 <div id="grid" class="tab-content active">
 
-<p id="heading">• HTML5 added new ways to include special content on web pages, like graphics with &lt;svg&gt; or math formulas with &lt;math&gt;. These elements are treated differently by web browsers than regular HTML, which means they follow their own set of rules and have their own namespace.
-<br><br>• I have retrieved elements with their behaviour towards mutation from the paper <a href="https://www.ias.cs.tu-bs.de/publications/parsing_differentials.pdf">Parse Me, Baby, One More Time: Bypassing HTML Sanitizer via Parsing Differentials.</a></p>
+<p id="heading">• <a href="https://www.w3.org/1999/xhtml/" style="color:#0ABABA;">HTML5</a> added new ways to include special content on web pages, like graphics with <a href="https://www.w3.org/2000/svg" style="color:#0ABABA;">&lt;svg&gt;</a> or math formulas with <a href="https://www.w3.org/1998/Math/MathML/" style="color:#0ABABA;">&lt;math&gt;</a>. These elements are treated differently by web browsers than regular HTML, which means they follow their own set of rules and have their own namespace.
+<br><br>• I have retrieved elements with their behaviour towards mutation from the paper <a href="https://www.ias.cs.tu-bs.de/publications/parsing_differentials.pdf" style="color:#0ABABA;">Parse Me, Baby, One More Time: Bypassing HTML Sanitizer via Parsing Differentials.</a></p><br><br>
   <div class="grid-container">
     <div class="item red">
       <div class="content">
         <h2>img,script</h2>
-    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+    <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Typical HTML elements which can carry XSS Payloads.</p>            
       </div>
     </div>
@@ -452,14 +460,14 @@ button.topics:active {
     <div class="item red2">
       <div class="content">
         <h2>br,embed</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
         <p>No end tag, no content allowed,terminate foreign content.</p>
       </div>
     </div>
     <div class="item cyan">
       <div class="content">
         <h2>input</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">void element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
         <p>No end tag,no content allowed.</p>
       </div>
     </div>
@@ -478,7 +486,7 @@ button.topics:active {
         <div class="item red">
       <div class="content">
         <h2>noscript</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Parsed differently depending on scripting flag : either HTML or javascript content.</p>
       </div>
     </div>
@@ -514,7 +522,7 @@ button.topics:active {
     <div class="item red">
       <div class="content">
         <h2>textarea</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">escapable rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#escapable-raw-text-elements">escapable rawtext element</a></span></button>
         <p>Only text content.</p>
       </div>
     </div>
@@ -529,7 +537,7 @@ button.topics:active {
     <div class="item red">
       <div class="content">
         <h2>xmp</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>No element specification anymore,still has parsing rules,used to render markup as text without executing it.</p>
       </div>
     </div>
@@ -581,21 +589,21 @@ button.topics:active {
     <div class="item white">
       <div class="content">
         <h2>plaintext</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"> plaintext state element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"> <a href="https://html.spec.whatwg.org/#plaintext-state">plaintext state element</a></span></button>
         <p>Deprecated.Renders everything below as plain text,can not be closed.
       </div>
     </div>
     <div class="item gold">
       <div class="content">
         <h2>noframes,noembed</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword">rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>No element specification anymore,still have parsing rules,contain raw text element.</p>
       </div>
     </div>
     <div class="item red">
       <div class="content">
         <h2>iframe</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Iframe element specification says no content allowed,but parsing specification says raw text content.</p>
       </div>
     </div>
@@ -603,7 +611,7 @@ button.topics:active {
       <div class="content">
         <h2>svg</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
-            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Namespace transition from HTML to SVG.</p>
       </div>
     </div>
@@ -612,7 +620,7 @@ button.topics:active {
       <div class="content">
         <h2>foreignObject,desc,path</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
-            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Allow to embed HTML segments inside a SVG.</p>
       </div>
     </div>
@@ -620,7 +628,7 @@ button.topics:active {
       <div class="content">
         <h2>math</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
-            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Namespace transistion from HTML to MathML.</p>
       </div>
     </div>
@@ -630,7 +638,7 @@ button.topics:active {
         <h2>mi,mo,mn,ms,mtext</h2>
         <h2>mglyph,mtext,annotation-xml</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
-            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword">foreign element</span></button>
+            <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Allow to embed HTML segments inside MathML.</p>
         
       </div>
@@ -639,7 +647,7 @@ button.topics:active {
     <div class="item cyan">
       <div class="content">
         <h2>style,font</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML,SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML,SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Text content when in HTML,otherwise markup.</p>
         <p>Deprecated for both HTML and SVG.
       </div>
@@ -648,7 +656,7 @@ button.topics:active {
     <div class="item white">
       <div class="content">
         <h2>title</h2>
-            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword">escapable rawtext element</span></button>
+            <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#escapable-raw-text-elements">escapable rawtext element</a></span></button>
 
         <p>HTML namespace - text content,singleton: not enforced by parsing specification.
         <p>SVG namespace - can contain markup.
