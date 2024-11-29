@@ -18,7 +18,6 @@ body {
     color: #fff;
 
     display: grid;
-    place-items: center;
     background-color: black;
     margin: 0rem;
 
@@ -331,12 +330,10 @@ body.menu-toggled > .meta-link > span {
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
         grid-column: span 2; /* Span full width for better visibility on mobile */
         grid-row: auto;
-        max-width:70%; /* Let rows adjust dynamically */
+        max-width:80%; /* Let rows adjust dynamically */
 
     }
-    #heading{
-        justify-content: center;
-      }
+
 
 
 }
@@ -354,12 +351,10 @@ body.menu-toggled > .meta-link > span {
 
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
         grid-column: span 1; /* Full width per item */
-        max-width:60%;
+        max-width:80%;
         justify-content: center;
       }
-      #heading{
-        justify-content: center;
-      }
+
 }
 
 /* else-------------------- else */
@@ -709,7 +704,8 @@ button.topics:active {
     <!---->
     <div class="item red">
       <div class="content">
-        <h2>foreignObject,desc,path</h2>
+        <h2>foreignObject</h2>
+        <h2>desc,path</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
             <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Allow to embed HTML segments inside a SVG.</p>
