@@ -317,43 +317,38 @@ body.menu-toggled > .meta-link > span {
   }
 }
 
-/* Responsive grid for mobile devices */
 @media (max-width: 768px) {
+    /* Adjust grid for smaller screens */
     .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* Reduce columns to 2 for smaller screens */
-        grid-template-rows: auto; /* Allow rows to adjust based on content */
-        gap: 8px; /* Slightly smaller gap for compact layout */
-        height: auto;
-        width: 100%; /* Make grid container width fluid to fit the screen */
-        box-sizing: border-box; /* Include padding and borders in the element's total width */
-        overflow-x: hidden;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns */
+        grid-template-rows: auto; /* Let the rows auto-adjust */
+        gap: 8px;
 
-       /* Adjust height for scrolling */
     }
 
-    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
-        width: 100%;
-        grid-column: span 2; /* Span full width for better visibility on mobile */
-        grid-row: auto; /* Let rows adjust dynamically */
+    /* Items span full width on mobile */
+    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white {
+        grid-column: span 1; /* Take up full width on mobile */
     }
+
+    #heading {
+      text-align: center;
 }
 
-/* For very small devices (phones in portrait mode) */
+/* Very small devices (portrait phones) */
 @media (max-width: 480px) {
     .grid-container {
-        grid-template-columns: 1fr; /* Single column layout for the smallest screens */
+        grid-template-columns: 1fr; /* 1 column layout for the smallest screens */
+        gap: 5px;
+    }
 
-        gap: 5px; /* Smaller gap for compact layout */
+    /* Items also take full width on very small screens */
+    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white {
+        grid-column: span 1; /* Span 1 full width */
     }
 
     .item {
-        width: 100%;
-        padding: 15px; /* Reduce padding for smaller screen real estate */
-    }
-
-    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
-        width: 100%;
-        grid-column: span 1; /* Full width per item */
+        padding: 15px; /* Smaller padding on very small devices */
     }
 }
 
