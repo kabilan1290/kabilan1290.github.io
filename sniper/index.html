@@ -166,8 +166,9 @@ input:focus{
 
 h2 {
     margin: 0;
-    font-size: 1.9rem;
+    font-size: 1.9rem; 
     font-weight: bold;
+
 }
 
 p {
@@ -324,12 +325,20 @@ body.menu-toggled > .meta-link > span {
         grid-template-rows: auto; /* Allow rows to adjust based on content */
         gap: 8px; /* Slightly smaller gap for compact layout */
         height: auto; /* Adjust height for scrolling */
+
     }
 
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
         grid-column: span 2; /* Span full width for better visibility on mobile */
-        grid-row: auto; /* Let rows adjust dynamically */
+        grid-row: auto;
+        max-width:70%; /* Let rows adjust dynamically */
+
     }
+    #heading{
+        justify-content: center;
+      }
+
+
 }
 
 /* For very small devices (phones in portrait mode) */
@@ -345,7 +354,12 @@ body.menu-toggled > .meta-link > span {
 
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
         grid-column: span 1; /* Full width per item */
-    }
+        max-width:60%;
+        justify-content: center;
+      }
+      #heading{
+        justify-content: center;
+      }
 }
 
 /* else-------------------- else */
@@ -712,8 +726,9 @@ button.topics:active {
     
     <div class="item gold">
       <div class="content">
-        <h2>mi,mo,mn,mtext,malignmark</h2>
-        <h2>mglyph,ms,mtext,annotation-xml</h2>
+        <h2>mi,mo,mn,mtext</h2>
+        <h2>mglyph,ms,mtext</h2>
+        <h2>annotation-xml,malignmark</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
             <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#foreign-elements">foreign element</a></span></button>
         <p>Allow to embed HTML segments inside MathML.</p>
