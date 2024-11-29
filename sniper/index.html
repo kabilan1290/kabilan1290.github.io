@@ -323,10 +323,16 @@ body.menu-toggled > .meta-link > span {
         grid-template-columns: repeat(2, 1fr); /* Reduce columns to 2 for smaller screens */
         grid-template-rows: auto; /* Allow rows to adjust based on content */
         gap: 8px; /* Slightly smaller gap for compact layout */
-        height: auto; /* Adjust height for scrolling */
+        height: auto;
+        width: 100%; /* Make grid container width fluid to fit the screen */
+        box-sizing: border-box; /* Include padding and borders in the element's total width */
+        overflow-x: hidden;
+
+       /* Adjust height for scrolling */
     }
 
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
+        width: 100%;
         grid-column: span 2; /* Span full width for better visibility on mobile */
         grid-row: auto; /* Let rows adjust dynamically */
     }
@@ -336,14 +342,17 @@ body.menu-toggled > .meta-link > span {
 @media (max-width: 480px) {
     .grid-container {
         grid-template-columns: 1fr; /* Single column layout for the smallest screens */
+
         gap: 5px; /* Smaller gap for compact layout */
     }
 
     .item {
+        width: 100%;
         padding: 15px; /* Reduce padding for smaller screen real estate */
     }
 
     .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
+        width: 100%;
         grid-column: span 1; /* Full width per item */
     }
 }
@@ -406,6 +415,32 @@ button.topics:active {
   text-decoration: underline;
 }
 
+.button-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.namespace-btn {
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 16px;
+    background-color:#0ABABA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.namespace-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+.namespace-btn.active {
+    background-color: #2ecc71; /* Green for active state */
+    transform: scale(1.1);
+}
 
 </style>
 <body>
@@ -438,6 +473,11 @@ button.topics:active {
 
 <p id="heading">• <a href="https://www.w3.org/1999/xhtml/" style="color:#0ABABA;">HTML5</a> added new ways to include special content on web pages, like graphics with <a href="https://www.w3.org/2000/svg" style="color:#0ABABA;">&lt;svg&gt;</a> or math formulas with <a href="https://www.w3.org/1998/Math/MathML/" style="color:#0ABABA;">&lt;math&gt;</a>. These elements are treated differently by web browsers than regular HTML, which means they follow their own set of rules and have their own namespace.
 <br><br>• I have retrieved elements with their behaviour towards mutation from the paper <a href="https://www.ias.cs.tu-bs.de/publications/parsing_differentials.pdf" style="color:#0ABABA;">Parse Me, Baby, One More Time: Bypassing HTML Sanitizer via Parsing Differentials.</a></p><br><br>
+    <div class="button-container">
+        <button class="namespace-btn" id="html-btn">HTML Namespace</button>
+        <button class="namespace-btn" id="svg-btn">SVG Namespace</button>
+        <button class="namespace-btn" id="mathml-btn">MathML Namespace</button>
+    </div>
   <div class="grid-container">
     <div class="item red">
       <div class="content">
@@ -761,6 +801,65 @@ function searchItems() {
     }
   });
 }
+
+const htmlBtn = document.getElementById("html-btn");
+const svgBtn = document.getElementById("svg-btn");
+const mathmlBtn = document.getElementById("mathml-btn");
+
+function handleButtonClick(namespaceBtn) {
+    const selectedNamespace = namespaceBtn.textContent.trim().toLowerCase();  // Get the button text, normalized to lowercase
+    const items = document.querySelectorAll('.item');  // All items to filter
+    const heading = document.getElementById('heading');  // Heading to display when there are results
+
+    // Check if the clicked button is already active
+    const isActive = namespaceBtn.classList.contains('active');
+
+    if (isActive) {
+        // "Unclick" the button: remove active class and show all items
+        namespaceBtn.classList.remove('active');
+        items.forEach(item => {
+            item.style.display = 'block';  // Show all items
+        });
+        // Ensure the heading is always visible when showing all items
+        heading.style.display = 'block';  // Ensure heading is visible
+    } else {
+        // "Click" the button: remove active class from all buttons, add it to the clicked one
+        document.querySelectorAll('.namespace-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        namespaceBtn.classList.add('active');  // Add active class to the clicked button
+
+        let foundAny = false;  // Flag to track if we found any matching items
+        items.forEach(item => {
+            const keywordSpan = item.querySelector('.keyword');  // Find the keyword span inside the item
+            if (keywordSpan) {
+                const keywordText = keywordSpan.textContent.toLowerCase();  // Get the text inside the span (normalized)
+                // Check if the selected namespace matches the keyword inside the span
+                if (keywordText.includes(selectedNamespace)) {
+                    item.style.display = 'block';  // Show the item if it matches
+                    foundAny = true;  // Set the flag to true if at least one item is found
+                } else {
+                    item.style.display = 'none';  // Hide the item if it doesn't match
+                }
+            } else {
+                item.style.display = 'none';  // Hide item if no keyword span is found
+            }
+        });
+
+        // Show or hide the heading based on whether any matching items were found
+        if (foundAny) {
+            heading.style.display = 'block';  // Show heading if there are matching items
+        } else {
+            heading.style.display = 'none';  // Hide heading if no items match
+        }
+    }
+}
+
+// Event listeners for the buttons
+htmlBtn.addEventListener("click", () => handleButtonClick(htmlBtn));
+svgBtn.addEventListener("click", () => handleButtonClick(svgBtn));
+mathmlBtn.addEventListener("click", () => handleButtonClick(mathmlBtn));
+
   </script>
 
 
