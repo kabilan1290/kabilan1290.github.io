@@ -317,38 +317,34 @@ body.menu-toggled > .meta-link > span {
   }
 }
 
+/* Responsive grid for mobile devices */
 @media (max-width: 768px) {
-    /* Adjust grid for smaller screens */
     .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns */
-        grid-template-rows: auto; /* Let the rows auto-adjust */
-        gap: 8px;
-
+        grid-template-columns: repeat(2, 1fr); /* Reduce columns to 2 for smaller screens */
+        grid-template-rows: auto; /* Allow rows to adjust based on content */
+        gap: 8px; /* Slightly smaller gap for compact layout */
+        height: auto; /* Adjust height for scrolling */
     }
 
-    /* Items span full width on mobile */
-    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white {
-        grid-column: span 1; /* Take up full width on mobile */
+    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
+        grid-column: span 2; /* Span full width for better visibility on mobile */
+        grid-row: auto; /* Let rows adjust dynamically */
     }
-
-    #heading {
-      text-align: center;
 }
 
-/* Very small devices (portrait phones) */
+/* For very small devices (phones in portrait mode) */
 @media (max-width: 480px) {
     .grid-container {
-        grid-template-columns: 1fr; /* 1 column layout for the smallest screens */
-        gap: 5px;
-    }
-
-    /* Items also take full width on very small screens */
-    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white {
-        grid-column: span 1; /* Span 1 full width */
+        grid-template-columns: 1fr; /* Single column layout for the smallest screens */
+        gap: 5px; /* Smaller gap for compact layout */
     }
 
     .item {
-        padding: 15px; /* Smaller padding on very small devices */
+        padding: 15px; /* Reduce padding for smaller screen real estate */
+    }
+
+    .green, .red, .red2, .green2, .cyan, .cyan2, .gold, .white{
+        grid-column: span 1; /* Full width per item */
     }
 }
 
@@ -417,7 +413,7 @@ button.topics:active {
 }
 .namespace-btn {
     padding: 10px 20px;
-    margin-left: 10px;
+    margin-left: 12px;
     font-size: 16px;
     background-color:#0ABABA;
     color: white;
