@@ -1,0 +1,9 @@
+<script>
+
+const params = new URL(location.href).searchParams;
+const redir = params.get('redir');
+if (redir){
+	window.location = redir
+}
+
+</script>
