@@ -1,10 +1,14 @@
 <script>
 
 function win(){
-	var safeLocation = location.href;
-	var notRegular = new RegExp( location.hash, "g" );
-	safeLocation = safeLocation.replace( notRegular, " ");
-	window.location.href = safeLocation;
+	const params = new URL(location.href).searchParams;
+	const redir = params.get('redir');
+	if(redir){
+		var safeLocation = location.href;
+		var notRegular = new RegExp( location.hash, "g" );
+		safeLocation = safeLocation.replace( notRegular, " ");
+		window.location.href = safeLocation;
+	}
 
 }
 win()
