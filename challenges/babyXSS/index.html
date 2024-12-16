@@ -1,0 +1,11 @@
+<script>
+
+function win(){
+	var safeLocation = location.href;
+	var notRegular = new RegExp( location.hash, "g" );
+	safeLocation = safeLocation.replace( notRegular, " ");
+	window.location.href = safeLocation;
+
+}
+win()
+</script>
