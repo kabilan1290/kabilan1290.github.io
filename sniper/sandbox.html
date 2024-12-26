@@ -33,14 +33,35 @@ body {
   width: 60px;
   height: 34px;
   margin: 9px;
+  margin-right: 40px;
+
 }
 
 .switch input { 
   opacity: 0;
   width: 0;
   height: 0;
+
+}
+input[type="checkbox"]:disabled + .slider {
+  background-color: #e0e0e0;  /* Light gray background for disabled state */
+  cursor: not-allowed;  /* Change cursor to "not allowed" */
 }
 
+/* Change slider color for disabled state */
+input[type="checkbox"]:disabled:checked + .slider {
+  background-color: #b3b3b3; /* Change the color when checked and disabled */
+}
+
+/* Optional: If you want to style the slider circle for disabled state */
+input[type="checkbox"]:disabled + .slider:before {
+  background-color: #999;  /* Gray color for the circle */
+}
+
+/* If you have an error state or want to customize when disabled and error */
+input[type="checkbox"].error:disabled + .slider {
+  background-color: #f8d7da;  /* Soft red color for error */
+}
 .slider {
   position: absolute;
   cursor: pointer;
@@ -140,43 +161,95 @@ input[type="text"]:focus {
     border-color: #52c944;
     box-shadow: 0 0 8px rgba(82, 201, 68, 0.8);
 }
+.container {
+    display: flex; /* Enables horizontal alignment */
+    justify-content: space-around; /* Adds space between the iframes */
+    align-items: center; /* Vertically aligns the iframes */
+    margin-top: 20px;
+}
 
 iframe {
     margin-top: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;
-    width: 90%;
+    width: 50%;
     height: 300px;
+    display: flex;
+    align-items: center;
 
 }
 
-input[type="text"]:disabled {
-    background-color: #3a3a3a;
-    color: #999;
-    cursor: not-allowed;
-}
-
-input[type="text"].error {
-    animation: shake 0.3s;
-    border-color: crimson !important;
-    box-shadow: 0 0 8px crimson !important;
-}
-
-/* Shake animation */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
 </style>
 <body>
 
 <center><h1 data-value="IFRAME PLAYBOX">IFRAME PLAYBOX</h1><label class="switch">
 
- <br> <h3>sandbox</h3>
+ <br> <h5>frame-sandbox</h5>
 <input type="checkbox" id="toggle">
+  <span class="slider round"></span>
+
+</label>
+<label class="switch">
+ <br> <h5>allow-forms</h5>
+<input type="checkbox" id="toggle2" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+<label class="switch">
+ <br> <h5>allow-modals</h5>
+<input type="checkbox" id="toggle3" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+<label class="switch">
+ <br> <h5>allow-popups</h5>
+<input type="checkbox" id="toggle4" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+<label class="switch">
+ <br> <h5>allow-scripts </h5>
+<input type="checkbox" id="toggle5" disabled>
+  <span class="slider round"></span>
+
+</label>
+<br><br>
+<label class="switch">
+ <br> <h5>allow-top-navigation-by-user
+</h5>
+<input type="checkbox" id="toggle6" disabled>
+  <span class="slider round"></span>
+
+</label>
+<label class="switch">
+ <br> <h5>allow-top-navigation  </h5>
+<input type="checkbox" id="toggle7" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+<label class="switch">
+ <br> <h5>allow-orientation-lock</h5>
+<input type="checkbox" id="toggle8" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+
+<label class="switch">
+ <br> <h5>allow-pointer-lock  </h5>
+<input type="checkbox" id="toggle9" disabled>
+  <span class="slider round"></span>
+
+</label>
+
+
+<label class="switch">
+ <br> <h5>allow-popups-to-escape-sandbox</h5>
+<input type="checkbox" id="toggle10" disabled>
   <span class="slider round"></span>
 
 </label>
@@ -215,38 +288,169 @@ document.querySelector("h1").onmouseover = event => {
 
 <input id="iframecontent" size="50" type="text"></input>
 
-<input id="sandboxattributes" size="50" type="text" disabled></input>
+<input id="iframesrcdoc" size="50" type="text" ></input>
 
 
 <script>
+const container = document.createElement('div');
+container.className = 'container';
+document.body.appendChild(container);
 
+//--------------------10 toggle elements------------------------
 const toggle = document.getElementById('toggle');
-const sndbxattributes = document.getElementById('sandboxattributes')
+const toggle2 = document.getElementById('toggle2');
+const toggle3 = document.getElementById('toggle3');
+const toggle4 = document.getElementById('toggle4');
+const toggle5 = document.getElementById('toggle5');
+const toggle6 = document.getElementById('toggle6');
+const toggle7 = document.getElementById('toggle7');
+const toggle8 = document.getElementById('toggle8');
+const toggle9 = document.getElementById('toggle9');
+const toggle10 = document.getElementById('toggle10');
+//----------------------------------------------------------
 
+// iframe src window
 frame = document.createElement("iframe")
+frame.setAttribute("id","source-frame")
+
 frame.src=""
-document.body.appendChild(frame)
+container.appendChild(frame)
+
+// iframe srcdoc window
+frame2 = document.createElement("iframe")
+frame2.setAttribute("id","sourcedoc-frame")
+
+frame2.srcdoc=""
+
+container.appendChild(frame2)
+
 
 const change = document.getElementById("iframecontent")
+const change2 =document.getElementById("iframesrcdoc")
 
 const inputHandler = function(e) {
-  frame.src=`data:text/html,<style>body {background-color: grey}</style>${e.target.value}`
+  frame.src=`data:text/html,<style>body {color: white;font-family: 'Space Mono', monospace;}</style>${e.target.value}`
 
 }
 
+const inputHandler2 = function(e) {
+  frame2.srcdoc=`<style>body {color: white;font-family: 'Space Mono', monospace;}</style>${e.target.value}`
+
+}
+
+
+
 change.addEventListener('input', inputHandler);
+change2.addEventListener('input', inputHandler2);
 
 
 toggle.addEventListener('change', () => {
       if (toggle.checked) {
         frame.setAttribute("sandbox","")
-        sndbxattributes.removeAttribute("disabled")
+        frame2.setAttribute("sandbox","")
+        document.getElementById('toggle2').removeAttribute('disabled');
+        document.getElementById('toggle3').removeAttribute('disabled');
+        document.getElementById('toggle3').removeAttribute('disabled');
+        document.getElementById('toggle4').removeAttribute('disabled');
+        document.getElementById('toggle5').removeAttribute('disabled');
+        document.getElementById('toggle6').removeAttribute('disabled');
+        document.getElementById('toggle7').removeAttribute('disabled');
+        document.getElementById('toggle8').removeAttribute('disabled');
+        document.getElementById('toggle9').removeAttribute('disabled');
+        document.getElementById('toggle10').removeAttribute('disabled');
       } else {
         frame.removeAttribute("sandbox") // Toggle off
-        sndbxattributes.setAttribute("disabled","")
+        frame2.removeAttribute("sandbox") // Toggle off
+        document.getElementById('toggle2').setAttribute('disabled','true');
+        document.getElementById('toggle3').setAttribute('disabled','true');
+        document.getElementById('toggle4').setAttribute('disabled','true');
+        document.getElementById('toggle5').setAttribute('disabled','true');
+        document.getElementById('toggle6').setAttribute('disabled','true');
+        document.getElementById('toggle7').setAttribute('disabled','true');
+        document.getElementById('toggle8').setAttribute('disabled','true');
+        document.getElementById('toggle9').setAttribute('disabled','true');
+        document.getElementById('toggle10').setAttribute('disabled','true');
 
       }
     });
+
+function updateSandbox(frame, frame2, toggle, attribute) {
+  let sandboxAttr = frame.getAttribute('sandbox') || '';
+  let sandboxList = sandboxAttr.split(' ').filter(Boolean); // Get current sandbox values and remove empty entries
+
+  // Add or remove the specified attribute based on toggle's state
+  if (toggle.checked) {
+    if (!sandboxList.includes(attribute)) {
+      sandboxList.push(attribute);
+    }
+  } else {
+    sandboxList = sandboxList.filter(item => item !== attribute);
+  }
+
+  // Update frame's sandbox attribute
+  frame.setAttribute('sandbox', sandboxList.join(' '));
+
+  // Repeat the same for frame2
+  sandboxAttr = frame2.getAttribute('sandbox') || '';
+  sandboxList = sandboxAttr.split(' ').filter(Boolean);
+
+  if (toggle.checked) {
+    if (!sandboxList.includes(attribute)) {
+      sandboxList.push(attribute);
+    }
+  } else {
+    sandboxList = sandboxList.filter(item => item !== attribute);
+  }
+
+  frame2.setAttribute('sandbox', sandboxList.join(' '));
+}
+
+// Event listener for toggle2 (allow-forms)
+toggle2.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle2, 'allow-forms');
+});
+
+// Event listener for toggle3 (allow-modals)
+toggle3.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle3, 'allow-modals');
+});
+
+// Event listener for toggle4 (allow-popups)
+toggle4.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle4, 'allow-popups');
+});
+
+// Event listener for toggle5 (allow-scripts)
+toggle5.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle5, 'allow-scripts');
+});
+
+// Event listener for toggle6 (allow-top-navigation-by-user)
+toggle6.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle6, 'allow-top-navigation-by-user-activation');
+});
+
+// Event listener for toggle7 (allow-top-navigation)
+toggle7.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle7, 'allow-top-navigation');
+});
+
+// Event listener for toggle8 (allow-orientation-lock)
+toggle8.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle8, 'allow-orientation-lock');
+});
+
+// Event listener for toggle9 (allow-pointer-lock)
+toggle9.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle9, 'allow-pointer-lock');
+});
+
+// Event listener for toggle10 (allow-popups-to-escape-sandbox)
+toggle10.addEventListener('change', () => {
+  updateSandbox(frame, frame2, toggle10, 'allow-popups-to-escape-sandbox');
+});
+
+
 </script>
 
 
