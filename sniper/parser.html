@@ -1,0 +1,65 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mutation Sniper</title>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/kabilan1290/kabilan1290.github.io/refs/heads/main/sniper/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/kabilan1290/kabilan1290.github.io/refs/heads/main/sniper/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="https://raw.githubusercontent.com/kabilan1290/kabilan1290.github.io/refs/heads/main/sniper/favicon_io/site.webmanifest">
+</head>
+<style>
+html{
+  --color-secondary: #30302f;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-family: 'Space Mono', monospace;
+    background-color: #2c2c2c;
+    color: #fff;
+
+    display: grid;
+    background-color: black;
+    margin: 0rem;
+
+}
+</style>
+<body>
+<center><h1 data-value="MUTATION SNIPER">MUTATION SNIPER</h1></center>
+<br><br>
+<script>
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+let interval = null;
+
+document.querySelector("h1").onmouseover = event => {  
+  let iteration = 0;
+  
+  clearInterval(interval);
+  
+  interval = setInterval(() => {
+    event.target.innerText = event.target.innerText
+      .split("")
+      .map((letter, index) => {
+        if(index < iteration) {
+          return event.target.dataset.value[index];
+        }
+      
+        return letters[Math.floor(Math.random() * 26)]
+      })
+      .join("");
+    
+    if(iteration >= event.target.dataset.value.length){ 
+      clearInterval(interval);
+    }
+    
+    iteration += 1 / 3;
+  }, 30);
+}</script>
+<iframe src="https://yeswehack.github.io/Dom-Explorer/frame/?input=editable&titleBar=readonly&readonly=true&pipe[titleBar]=false&pipe[settings]=true&pipe[render]=true&pipe[skip]=true#eyJpbnB1dCI6IiIsInBpcGVsaW5lcyI6W3siaWQiOiJ6NzVwbXF3MiIsIm5hbWUiOiJCZWZvcmUgUGFyc2luZyIsInBpcGVzIjpbeyJuYW1lIjoiQ3VzdG9tIiwiaWQiOiJud3VmZG1maSIsImhpZGUiOmZhbHNlLCJza2lwIjpmYWxzZSwib3B0cyI6eyJjb2RlIjoicmV0dXJuIGlucHV0In19XX0seyJpZCI6Im11ZnUzOG5kIiwibmFtZSI6IkFmdGVyIFBhcnNpbmciLCJwaXBlcyI6W3sibmFtZSI6IkRvbVBhcnNlciIsImlkIjoiem82a3EydWMiLCJoaWRlIjpmYWxzZSwic2tpcCI6ZmFsc2UsIm9wdHMiOnsidHlwZSI6InRleHQvaHRtbCIsInNlbGVjdG9yIjoiYm9keSIsIm91dHB1dCI6ImlubmVySFRNTCIsImFkZERvY3R5cGUiOnRydWV9fV19XX0=" width=100% height=700px></iframe>
+</body>
