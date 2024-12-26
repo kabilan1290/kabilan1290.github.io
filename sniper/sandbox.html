@@ -232,7 +232,7 @@ iframe {
 </label>
 
 <label class="switch">
- <br> <h5>allow-orientation-lock</h5>
+ <br> <h5>allow-same-origin</h5>
 <input type="checkbox" id="toggle8" disabled>
   <span class="slider round"></span>
 
@@ -437,7 +437,7 @@ toggle7.addEventListener('change', () => {
 
 // Event listener for toggle8 (allow-orientation-lock)
 toggle8.addEventListener('change', () => {
-  updateSandbox(frame, frame2, toggle8, 'allow-orientation-lock');
+  updateSandbox(frame, frame2, toggle8, 'allow-same-origin');
 });
 
 // Event listener for toggle9 (allow-pointer-lock)
