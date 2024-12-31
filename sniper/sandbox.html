@@ -329,12 +329,12 @@ const change = document.getElementById("iframecontent")
 const change2 =document.getElementById("iframesrcdoc")
 
 const inputHandler = function(e) {
-  frame.src=`data:text/html,<style>body {color: white;font-family: 'Space Mono', monospace;}</style>${e.target.value}`
+  frame.src=`data:text/html,<style>body {color: white;font-family: 'Space Mono', monospace;}</style><body>${e.target.value}`
 
 }
 
 const inputHandler2 = function(e) {
-  frame2.srcdoc=`<style>body {color: white;font-family: 'Space Mono', monospace;}</style>${e.target.value}`
+  frame2.srcdoc=`<style>body {color: white;font-family: 'Space Mono', monospace;}</style><body>${e.target.value}`
 
 }
 
