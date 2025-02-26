@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>cookbook</title>
+</head>
+<style>
+	html{
+  --color-secondary: #30302f;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-family: 'Space Mono', monospace;
+    background-color: #2c2c2c;
+    color: #fff;
+
+    display: grid;
+    background-color: black;
+    margin: 0rem;
+
+}
+h1{
+	color: #0ABABA;
+}
+
+h2{
+	color: black;
+}
+.faq {
+  padding: 40px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+  color: black;
+}
+
+
+
+details {
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 20px 30px;
+  margin-block: 30px;
+}
+
+summary,
+p {
+  text-align: left;
+}
+
+summary {
+  margin-inline-start: 1rem;
+  list-style-position: outside;
+}
+
+summary::marker {
+  color: #8b7197;
+  font-size: 18px;
+}
+.code-block {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', 'Courier New', Courier, monospace;
+  font-weight: 300;
+  font-size: 16px;
+  padding: 16px;
+  overflow-x: auto;
+  line-height: 1.5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #3c3c3c;
+  text-align: left; /* Ensures text is left-aligned */
+}
+
+.code-block code {
+  display: block;
+  white-space: pre-wrap;
+  text-align: left; /* Left-aligns code inside */
+}
+
+
+.code-block::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.code-block::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+</style>
+<body>
+<center><h1>HTML Parser - A Cookbook</h1></center>
+<p><b style="color:#0ABABA;">HTML Parser</b> - A Cookbook: A collection of recipes exploring HTML parsing behaviors, treating parsing techniques as ingredients to craft structured data from raw markup. 🍽️📜</p>
+
+<div class="faq">
+	 <details>
+    <summary><b style="color:#0ABABA;">Parsing,Styling,Layout,Painting</b></summary>
+    <p>When you visit a webpage, you see the final visual content, but have you ever wondered how it's actually rendered? Behind the scenes, the browser goes through several steps to process the data, turning raw code into the interactive page you see. Let’s break down these steps in simple terms.
+<br><br>
+
+    	<p><b style="color:#0ABABA;">1.Parsing [Building the DOM]</b> - The browser reads the HTML code and converts it into a structured representation called the DOM (Document Object Model).Each HTML tag becomes a DOM node, forming a tree-like structure.</p><br>
+    	<img src="parsing.jpg" height=400px width=600px>	<img src="dom.jpg" height=400px width=600px>
+
+    	<p><b style="color:#0ABABA;">2.Styling [Applying CSS]</b>  - The browser processes CSS and figures out how each element should look (color, size, fonts, etc.).This information is applied to the corresponding DOM nodes.</p><br>
+    	    	<img src="style2.jpg" height=400px width=600px>	<img src="style1.jpg" height=400px width=600px>
+
+
+    	<p><b style="color:#0ABABA;">3.Layout [Positioning Elements</b> - The browser calculates the exact position and size of each element based on CSS rules and the structure of the page.This step ensures elements don’t overlap incorrectly and fit properly on the screen.</p><br>
+    	<img src="Layout.jpg" height=400px width=600px>
+
+    	<p><b style="color:#0ABABA;">4.Painting [Rendering Pixels]</b> - The browser takes all the information from the previous steps and paints the pixels onto the screen.This is when the page becomes visible to you.</p><br>
+    	    	<img src="paint.png" height=400px width=600px><br>
+
+
+    	ref: <a href="https://www.chromium.org/developers/the-rendering-critical-path/">The rendering critical path</a><br>
+    	ref:<a href="https://docs.google.com/presentation/d/1boPxbgNrTU0ddsc144rcXayGA_WF53k96imRH8Mp34Y/edit#slide=id.ga884fe665f_64_188">The life of a pixel</a>- The images used were from the slides.
+
+
+
+</p>
+  </details>
+  <details>
+    <summary><b style="color:#0ABABA;">HTML Parsing: Understanding the Backbone of Web Rendering</b></summary>
+    <p>HTML parsing is the process of reading an HTML document and converting it into a structured format that can be processed by a browser,Parsing a HTML document goes through the below stages !</p>
+    <p><img src="stages.png" height=250px width=250px><br></p>
+    <p><b style="color:#0ABABA;">Example:</b>&lt;!doctype html&gt;&lt;p&gt;helloworld
+    <p>Lets take the above example and lets have a look at how the parser go through each steps.<br><br>
+    <p>1.Bytes go over the network and a decoder will produce a stream of code points.
+    <p>2.The tokenizer walks through the stream of code points,character by character and emit tokens
+    <p>3.A doctype token,a start tag token(p) and a series of character tokens are generated.
+    <p>4.The tree builder take those tokens and builds the below dom.<br>
+    <pre style="text-align: left;">
+Document 
+	└── html 
+    		└── body 
+        		└── p 
+            		    └── #text: helloworld
+    </pre>
+    <img src="helloworld.png">
+    <p>A simple helloworld to be displayed ! it need to go through all the steps.<br>
+    	<center>ref: <a href="https://htmlparser.info/">Idiosyncrasies of the HTML parser</a>
+  </details>
+  <details>
+    <summary><b style="color:#0ABABA;">Content Type?</b></summary>
+    <p>The HTTP Content-Type representation header is used to indicate the original media type of a resource before any content encoding is applied.<br>
+    Imagine there is no content-type header? how will browser sniff the content?</p>
+    <p> Lets take a example by rendering a sweet &lt;h1&gt; heading tag and see the response?</p>
+    <img src='renderh1.png' height=300px width=600px><p> Anyway its expected to be render as html and it did ! no wonder...
+    <p>Lets take another example by rendering a &lt;h2&gt; tag !
+      <center><img src='renderh2.png' height=300px width=600px><p>what happens now? whys h2 tag is rendered as text :0
+        <p>This is because there is a set of rules/code that is in place which is reponsible for detection of a content.
+          <p>Below is the code of HTML sniffer.Basically it tells the browser the need for certain tags to be rendered as an html page.
+<pre class="code-block">
+// Our HTML sniffer differs slightly from Mozilla.  For example, Mozilla will
+// decide that a document that begins &#x22;&#x3C;!DOCTYPE SOAP-ENV:Envelope PUBLIC/&#x22; is
+// HTML, but we will not.
+
+#define MAGIC_HTML_TAG(tag) \
+  MAGIC_STRING(&#x22;text/html&#x22;, &#x22;&#x3C;&#x22; tag)
+
+static const MagicNumber kSniffableTags[] = {
+  // XML processing directive.  Although this is not an HTML mime type, we sniff
+  // for this in the HTML phase because text/xml is just as powerful as HTML and
+  // we want to leverage our white space skipping technology.
+  MAGIC_NUMBER(&#x22;text/xml&#x22;, &#x22;&#x3C;?xml&#x22;),  // Mozilla
+  // DOCTYPEs
+  MAGIC_HTML_TAG(&#x22;!DOCTYPE html&#x22;),  // HTML5 spec
+  // Sniffable tags, ordered by how often they occur in sniffable documents.
+  MAGIC_HTML_TAG(&#x22;script&#x22;),  // HTML5 spec, Mozilla
+  MAGIC_HTML_TAG(&#x22;html&#x22;),  // HTML5 spec, Mozilla
+  MAGIC_HTML_TAG(&#x22;!--&#x22;),
+  MAGIC_HTML_TAG(&#x22;head&#x22;),  // HTML5 spec, Mozilla
+  MAGIC_HTML_TAG(&#x22;iframe&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;h1&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;div&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;font&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;table&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;a&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;style&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;title&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;b&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;body&#x22;),  // Mozilla
+  MAGIC_HTML_TAG(&#x22;br&#x22;),
+  MAGIC_HTML_TAG(&#x22;p&#x22;),  // Mozilla
+};
+
+// ...
+
+// Returns true and sets result if the content appears to be HTML.
+// Clears have_enough_content if more data could possibly change the result.
+static bool SniffForHTML(base::StringPiece content,
+                         bool* have_enough_content,
+                         std::string* result) {
+  // For HTML, we are willing to consider up to 512 bytes. This may be overly
+  // conservative as IE only considers 256.
+  *have_enough_content &#x26;= TruncateStringPiece(512, &#x26;content);
+
+  // We adopt a strategy similar to that used by Mozilla to sniff HTML tags,
+  // but with some modifications to better match the HTML5 spec.
+  base::StringPiece trimmed =
+      base::TrimWhitespaceASCII(content, base::TRIM_LEADING);
+
+  // |trimmed| now starts at first non-whitespace character (or is empty).
+  return CheckForMagicNumbers(trimmed, kSniffableTags, result);
+}
+</pre>
+  <h1><p> Quick Question : </h1>
+    <p>If no content type is defined, are only the HTML elements/tags listed below responsible for rendering HTML, or can rendering be forced using other methods or elements?
+      <pre class="code-block">
+        &lt;!DOCTYPE html&gt;,&lt;script&gt;,&lt;html,&lt;!--&gt;,&lt;head&gt;,&lt;iframe&gt;,&lt;h1&gt;,&lt;div&gt;,&lt;font&gt;,&lt;table&gt;,&lt;a&gt;,&lt;style&gt;,&lt;title&gt;,&lt;body&gt;,&lt;br&gt;,&lt;p&gt;
+      </pre>
+      <img src='picture.jpg' height=300px width=600px>
+<p>Interestingly the picture element works ! but it is not defined on the deciding sniffer file, then how?
+<p> Since the picture tag starts with 'p' and the MAGIC_HTML_TAG(&#x22;p&#x22;) checks for p,anything starts with p 'picture','progress' tags will work and make the content render as HTML..
+  <p>I came to know about this behaviour/working through a challenge from Dreamhack wargame <a href="https://dreamhack.io/wargame/challenges/1787">Small File Storage</a> ! Thanks to my friends <b style="color:#0ABABA;">0xAlessandro</b> and <b style="color:#0ABABA;">Yuu</b>.
+<p>To learn more about this visit <a href="https://aszx87410.github.io/beyond-xss/en/ch5/mime-sniffing/">Mime Sniffing</a>
+
+  </details>
+  <details>
+    <summary>Content encoding?</summary>
+    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
+      sint, hic consequuntur consectetur, corporis enim ipsum quasi
+      recusandae vel nobis, exercitationem aspernatur autem vero ad soluta
+      eius ipsam praesentium aliquam!</p>
+  </details>
+</div>
+</body>
