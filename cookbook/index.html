@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>cookbook</title>
+	<title>HTML Parser & Quirks - A Cookbook</title>
 </head>
 <style>
 	html{
@@ -96,8 +96,8 @@ summary::marker {
 
 </style>
 <body>
-<center><h1>HTML Parser - A Cookbook</h1></center>
-<p><b style="color:#0ABABA;">HTML Parser</b> - A Cookbook: A collection of recipes exploring HTML parsing behaviors, treating parsing techniques as ingredients to craft structured data from raw markup. 🍽️📜</p>
+<center><h1>HTML Parser & Quirks - A Cookbook</h1></center>
+<p><b style="color:#0ABABA;">HTML Parser & Quirks</b> - A Cookbook: A collection of recipes exploring HTML parsing behaviors, treating parsing techniques as ingredients to craft structured data from raw markup. 🍽️📜</p>
 
 <div class="faq">
 	 <details>
@@ -224,11 +224,13 @@ static bool SniffForHTML(base::StringPiece content,
 
   </details>
   <details>
-    <summary>Content encoding?</summary>
-    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-      sint, hic consequuntur consectetur, corporis enim ipsum quasi
-      recusandae vel nobis, exercitationem aspernatur autem vero ad soluta
-      eius ipsam praesentium aliquam!</p>
-  </details>
+    <summary><b style="color:#0ABABA;">Character encoding?</b></summary>
+    <p>HTML parser need to know the definite encoding to operate on an input byte stream of the document.
+    <p>The character encoding can be defined using meta tag &lt;meta charset="utf-8"&gt; or it can be specified at the transport layer, HTTP Content-Type with charset parameter which gives the encoding of the document.</p>
+    <p>The document can also start with Byte Order Mark (BOM),If the document starts with the bytes given in the below column,then return the encoding correspondingly.</p>
+      <img src='bom.png'>
+      <p>The precedence order for character encoding is Byte Order Mark (BOM) > HTTP Content-Type Header > Meta Tag in HTML rendering.</p>
+        </details>
+
 </div>
 </body>
