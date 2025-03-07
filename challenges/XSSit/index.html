@@ -16,7 +16,7 @@
         const htmlContent = getQueryParam('html');
         if (htmlContent) {
             sanitized = DOMPurify.sanitize(htmlContent)
-            var blob = new Blob([htmlContent], {
+            var blob = new Blob([sanitized], {
             type: "text/html"
             });
             location=window.URL.createObjectURL(blob);
