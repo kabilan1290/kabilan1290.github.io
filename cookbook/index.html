@@ -113,7 +113,7 @@ summary::marker {
 
 
     	<p><b style="color:#0ABABA;">3.Layout [Positioning Elements</b> - The browser calculates the exact position and size of each element based on CSS rules and the structure of the page.This step ensures elements don’t overlap incorrectly and fit properly on the screen.</p><br>
-    	<img src="Layout.jpg" height=400px width=600px>
+    	<img src="layout.jpg" height=400px width=600px>
 
     	<p><b style="color:#0ABABA;">4.Painting [Rendering Pixels]</b> - The browser takes all the information from the previous steps and paints the pixels onto the screen.This is when the page becomes visible to you.</p><br>
     	    	<img src="paint.png" height=400px width=600px><br>
@@ -230,6 +230,13 @@ static bool SniffForHTML(base::StringPiece content,
     <p>The document can also start with Byte Order Mark (BOM),If the document starts with the bytes given in the below column,then return the encoding correspondingly.</p>
       <img src='bom.png'>
       <p>The precedence order for character encoding is Byte Order Mark (BOM) > HTTP Content-Type Header > Meta Tag in HTML rendering.</p>
+      <p>Before the HTML parser starts,a prescan of the byte stream can take place in an attempt to find the character encoding declaration.The prescan is usually done on the first 1024 bytes and there's a requirement for documents to include encoding declaration within 1024 bytes.
+          <h1><p> Quick Question : </h1>
+            <p>What if no charset is defined ?
+              <p>If no encoding declaration is found,then the default will usually depend on the user's locale and the most common default is windows-1252.
+                      <center><img src='nochar.png' height=300px width=600px>
+              <p> We can also abuse Encoding Differentials in absence of charsets, you can read more about it here <a href="https://www.sonarsource.com/blog/encoding-differentials-why-charset-matters/"> Encoding Differentials: Why Charset Matters </a>
+
         </details>
 
 </div>
