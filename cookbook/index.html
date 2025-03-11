@@ -148,7 +148,7 @@ Document
     	<center>ref: <a href="https://htmlparser.info/">Idiosyncrasies of the HTML parser</a>
   </details>
   <details>
-    <summary><b style="color:#0ABABA;">Content Type?</b></summary>
+    <summary><b style="color:#0ABABA;">Content Type:</b></summary>
     <p>The HTTP Content-Type representation header is used to indicate the original media type of a resource before any content encoding is applied.<br>
     Imagine there is no content-type header? how will browser sniff the content?</p>
     <p> Lets take a example by rendering a sweet &lt;h1&gt; heading tag and see the response?</p>
@@ -224,7 +224,7 @@ static bool SniffForHTML(base::StringPiece content,
 
   </details>
   <details>
-    <summary><b style="color:#0ABABA;">Character encoding?</b></summary>
+    <summary><b style="color:#0ABABA;">Character encoding:</b></summary>
     <p>HTML parser need to know the definite encoding to operate on an input byte stream of the document.
     <p>The character encoding can be defined using meta tag &lt;meta charset="utf-8"&gt; or it can be specified at the transport layer, HTTP Content-Type with charset parameter which gives the encoding of the document.</p>
     <p>The document can also start with Byte Order Mark (BOM),If the document starts with the bytes given in the below column,then return the encoding correspondingly.</p>
@@ -238,6 +238,28 @@ static bool SniffForHTML(base::StringPiece content,
               <p> We can also abuse Encoding Differentials in absence of charsets, you can read more about it here <a href="https://www.sonarsource.com/blog/encoding-differentials-why-charset-matters/"> Encoding Differentials: Why Charset Matters </a>
 
         </details>
+
+    <details>
+    <summary><b style="color:#0ABABA;">Error Handling:</b></summary>
+    <p>The HTML parser spec gives clear instructions on how to deal with errors that come up while reading an HTML document. Technically, a browser could stop processing if it hits an error, but that’s not what happens in practice. Instead, browsers follow the spec's rules for handling errors and fix the issues in a way that makes sure the content still loads and looks right.
+    <p>The spec has a set of steps for how to recover from errors, which helps browsers keep going even when something goes wrong. This process makes sure web pages show up correctly, even if there are some mistakes in the HTML. It's really important because not all HTML is perfect, and this approach helps browsers keep things working smoothly for users.
+    <p>When the HTML parser encounters issues like unclosed tags, missing quotes, or incorrect tag nesting, it doesn't stop or crash. Instead, it tries to fix these errors so that the page can still be displayed as correctly as possible.
+        <h3><p> Examples : </h3>
+          <center><img src='close.png' height=300px width=800px></center><br>
+      <center>Unclosed Tags - I'll Close It ! - The open p tag is automatically closed when the parser encounters the missing close tag.<br><br>
+       <center><img src='attriclose.png' height=300px width=800px></center><br>
+
+        <center>Missing Quotes - I'll Add It - The image tag is missing attribute quotes hence the parser add's it.</center><br>
+      <center><img src='nestclose.png' height=300px width=800px></center><br>
+
+        <center>Incorrect Nesting - I'll Fix It - Semantically wrong - Heading tag cannot be a child of another Heading tag, So the parser just adjust it in a meaningfull way.</center><br>
+
+
+  </details>
+
+  <details>
+    <summary><b style="color:#0ABABA;">Adoption Agency Algorithm :</b></summary>
+  </details>
 
 </div>
 </body>
