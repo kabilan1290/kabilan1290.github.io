@@ -1,6 +1,10 @@
 body {
   font-family: 'Space Mono', monospace;
   background: #008080;
+  background-image: url('windows.jpg'); /* Load local image */
+  background-size: 100% 135%; /* Adjust the background image size to cover the entire body */
+  background-position: center center; /* Center the background image */
+  background-repeat: no-repeat; /* Ensure the image doesn't repeat */
   color: #000;
   margin: 0;
   padding: 20px;
@@ -102,3 +106,4 @@ td {
     opacity: 1;
   }
 }
+
