@@ -447,6 +447,61 @@ button.topics:active {
     transform: scale(1.1);
 }
 
+    .item {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease-in-out, scale 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .item.flipped {
+        transform: rotateY(180deg) scale(1.3);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 350px;
+        height: 350px;
+        margin-top: -175px;
+        margin-left: -150px;
+        z-index: 100;
+    }
+
+    .item-front, .item-back {
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .item-front {
+        background-color: inherit;
+    }
+
+    .item-back {
+        background-color: #28282B   ;
+        color: white;
+        transform: rotateY(180deg);
+        display: none;
+    }
+
+    .item.flipped .item-front {
+        display: none;
+    }
+
+    .item.flipped .item-back {
+        display: flex;
+        backface-visibility: visible;
+    }
+
+    /* Spotlight Effect */
+    .dimmed {
+        background: white;
+        pointer-events: none;
+    }
+
 </style>
 <body>
 
@@ -484,35 +539,63 @@ button.topics:active {
         <button class="namespace-btn" id="mathml-btn">MathML Namespace</button>
     </div>
   <div class="grid-container">
-    <div class="item red" onclick="location='../sniper/img.html'">
+    <div class="item red" onclick="flipCard(event, this)">
+    <div class="item-front">
       <div class="content">
         <h2>img</h2>
     <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
-        <p>Typical HTML element which can carry XSS Payloads.</p>            
+        <p>Typical HTML element which can carry XSS Payloads in Event handlers.</p>            
       </div>
+
     </div>
-        <div class="item cyan2" onclick="location='../sniper/script.html'">
+                  <div class="item-back">
+            <p>IMG tag is an void element,it does not require a closing tag !
+        </div>
+</div>
+
+        <div class="item cyan2" onclick="flipCard(event, this)">
+        <div class="item-front">
       <div class="content">
         <h2>script</h2>
     <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Typical HTML element which can carry XSS Payloads.</p>            
       </div>
     </div>
-    <div class="item cyan">
+                      <div class="item-back">
+            <p>IMG tag is an void element it does not require a closing tag</p>
+        </div>
+    </div>
+
+
+    <div class="item cyan" onclick="flipCard(event, this)">
+            <div class="item-front">
       <div class="content">
         <h2>image</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">MATH NAMESPACE</span></button>
         <p> In HTML treated as img, valid SVG or MathML element.</p>
       </div>
     </div>
-        <div class="item green2" onclick="location='../sniper/template.html'">
+                      <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+        <div class="item green2" onclick="flipCard(event, this)">
+                <div class="item-front">
+
       <div class="content">
         <h2>template</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#the-template-element-2">template element</a></span></button>
         <p>By default, the element's content is not rendered,Can render content in other SVG or MathML namespaces.</p>
       </div>
     </div>
-    <div class="item gold">
+                          <div class="item-back">
+            <p>Details here</p>
+        </div>
+</div>
+    <div class="item gold" onclick="flipCard(event, this)">
+                        <div class="item-front">
+
       <div class="content">
         <h2>div,span</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
@@ -520,50 +603,92 @@ button.topics:active {
         
       </div>
     </div>
-    <div class="item white">
+                              <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item white" onclick="flipCard(event, this)">
+                        <div class="item-front">
+
       <div class="content">
         <h2>object</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Basic HTML element.
       </div>
     </div>
-    <div class="item gold">
+                                  <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item gold" onclick="flipCard(event, this)">
+                                <div class="item-front">
+
       <div class="content">
         <h2>form</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Form elements cannot be nested enforced by parsing specification.</p>
       </div>
     </div>
-    <div class="item red">
+                                      <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item red" onclick="flipCard(event, this)">
+             <div class="item-front">
+
       <div class="content">
         <h2>dfn,header</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Both cannot be nested,not enforced by parsing specification.</p>
       </div>
     </div>
-    <div class="item green ">
+                                          <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item green" onclick="flipCard(event, this)">
+                     <div class="item-front">
+
       <div class="content">
         <h2>p</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Terminates foreign content,optional end tag.</p>
       </div>
     </div>
-    <div class="item red2">
+                                              <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item red2" onclick="flipCard(event, this)">
+    <div class="item-front">
+
       <div class="content">
         <h2>br,embed</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
         <p>No end tag, no content allowed,terminate foreign content.</p>
       </div>
     </div>
-    <div class="item cyan">
+                                                  <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item cyan" onclick="flipCard(event, this)">
+            <div class="item-front">
+
       <div class="content">
         <h2>input</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
         <p>No end tag,no content allowed.</p>
       </div>
     </div>
+                                                      <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
     
-    <div class="item gold">
+    <div class="item gold" onclick="flipCard(event, this)">
+                    <div class="item-front">
+
       <div class="content">
         <h2>a</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
@@ -571,24 +696,42 @@ button.topics:active {
         
       </div>
     </div>
+                                                          <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
 
               <!--------------->
 
-        <div class="item red">
+        <div class="item red" onclick="flipCard(event, this)">
+                                <div class="item-front">
       <div class="content">
         <h2>noscript</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Parsed differently depending on scripting flag : either HTML or javascript content.</p>
       </div>
     </div>
-    <div class="item cyan">
+                                                              <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+    <div class="item cyan" onclick="flipCard(event, this)">
+                                        <div class="item-front">
+
       <div class="content">
         <h2>table</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Open's a table,parsing specification enforces no nesting,terminates foreign content.</p>
       </div>
     </div>
-    <div class="item gold">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item gold" onclick="flipCard(event, this)">
+             <div class="item-front">
+
       <div class="content">
         <h2>td,tr,colgroup</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
@@ -596,57 +739,103 @@ button.topics:active {
         
       </div>
     </div>
-    <div class="item white">
+            <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item white" onclick="flipCard(event, this)">
+        <div class="item-front">
+
       <div class="content">
         <h2>select</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Only option,optgroup and script supporting content are allowed,special parsing rules when inside table.
       </div>
     </div>
-    <div class="item gold">
+                <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item gold" onclick="flipCard(event, this)">
+    <div class="item-front">
+
       <div class="content">
         <h2>option</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Restriction on where it can occur,depending on attribute values allwed content changes.</p>
       </div>
     </div>
-    <div class="item red">
+                    <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item red" onclick="flipCard(event, this)">
+        <div class="item-front">
       <div class="content">
         <h2>textarea</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#escapable-raw-text-elements">escapable rawtext element</a></span></button>
         <p>Only text content.</p>
       </div>
     </div>
-    <div class="item green ">
+                        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item green" onclick="flipCard(event, this)">
+            <div class="item-front">
       <div class="content">
         <h2>keygen</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Not supported anymore,no content,no end tag.</p>
       </div>
     </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
     <!---->
-    <div class="item red">
+    <div class="item red" onclick="flipCard(event, this)">
+           <div class="item-front">
       <div class="content">
         <h2>xmp</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>No element specification anymore,still has parsing rules,used to render markup as text without executing it.</p>
       </div>
     </div>
-    <div class="item cyan">
+            <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item cyan" onclick="flipCard(event, this)">
+         <div class="item-front">
       <div class="content">
         <h2>frameset</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>No element specification anymore,still has parsing rules.</p>
       </div>
     </div>
+            <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
     
-    <div class="item gold">
+    <div class="item gold" onclick="flipCard(event, this)">
+             <div class="item-front">
       <div class="content">
         <h2>li,ul</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Make up a list,allowed to contain script supporting elements,terminate foreign content.</p>
         
       </div>
+    </div>
+                <div class="item-back">
+            <p>Details here</p>
+        </div>
     </div>
 
 
@@ -655,21 +844,35 @@ button.topics:active {
 
 
 
-            <div class="item red">
+            <div class="item red" onclick="flipCard(event, this)">
+                         <div class="item-front">
       <div class="content">
         <h2>pre,var</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Only allowed to contain phrasing content,terminate foreign content.</p>
       </div>
     </div>
-    <div class="item cyan">
+                    <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item cyan" onclick="flipCard(event, this)">
+           <div class="item-front">
+
       <div class="content">
         <h2>dl</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
         <p>Restricted content model,terminates foreign content.</p>
       </div>
     </div>
-    <div class="item gold">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item gold" onclick="flipCard(event, this)">
+               <div class="item-front">
       <div class="content">
         <h2>dt</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>
@@ -677,28 +880,52 @@ button.topics:active {
         
       </div>
     </div>
-    <div class="item white">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item white" onclick="flipCard(event, this)">
+                   <div class="item-front">
       <div class="content">
         <h2>plaintext</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"> <a href="https://html.spec.whatwg.org/#plaintext-state">plaintext state element</a></span></button>
         <p>Deprecated.Renders everything below as plain text,can not be closed.
       </div>
     </div>
-    <div class="item gold">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item gold" onclick="flipCard(event, this)">
+                       <div class="item-front">
       <div class="content">
         <h2>noframes,noembed</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>No element specification anymore,still have parsing rules,contain raw text element.</p>
       </div>
     </div>
-    <div class="item red">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item red" onclick="flipCard(event, this)">
+                           <div class="item-front">
       <div class="content">
         <h2>iframe</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
         <p>Iframe element specification says no content allowed,but parsing specification says raw text content.</p>
       </div>
     </div>
-    <div class="item green ">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item green" onclick="flipCard(event, this)">
+                               <div class="item-front">
       <div class="content">
         <h2>svg</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button>
@@ -706,8 +933,13 @@ button.topics:active {
         <p>Namespace transition from HTML to SVG.</p>
       </div>
     </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
     <!---->
-    <div class="item red">
+    <div class="item red" onclick="flipCard(event, this)">
+                                   <div class="item-front">
       <div class="content">
         <h2>foreignObject</h2>
         <h2>desc,path</h2>
@@ -716,7 +948,13 @@ button.topics:active {
         <p>Allow to embed HTML segments inside a SVG.</p>
       </div>
     </div>
-    <div class="item cyan">
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
+
+    <div class="item cyan" onclick="flipCard(event, this)">
+                                   <div class="item-front">
       <div class="content">
         <h2>math</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">MathML NAMESPACE</span></button>
@@ -724,8 +962,13 @@ button.topics:active {
         <p>Namespace transistion from HTML to MathML.</p>
       </div>
     </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
     
-    <div class="item gold">
+    <div class="item gold" onclick="flipCard(event, this)">
+<div class="item-front">
       <div class="content">
         <h2>mi,mo,mn,mtext</h2>
         <h2>mglyph,ms,mtext</h2>
@@ -736,8 +979,13 @@ button.topics:active {
         
       </div>
     </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
 
-    <div class="item cyan">
+    <div class="item cyan" onclick="flipCard(event, this)">
+        <div class="item-front">
       <div class="content">
         <h2>style,font</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML,SVG NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#raw-text-elements">rawtext element</a></span></button>
@@ -745,8 +993,13 @@ button.topics:active {
         <p>Deprecated for both HTML and SVG.
       </div>
     </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
+    </div>
 
-    <div class="item white">
+    <div class="item white" onclick="flipCard(event, this)">
+            <div class="item-front">
       <div class="content">
         <h2>title</h2>
             <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button><button class="topics"><span class="hashtag"># </span><span class="keyword">SVG NAMESPACE</span></button><button class="topics alt1"><span class="hashtag">#<span class="keyword"><a href="https://html.spec.whatwg.org/#escapable-raw-text-elements">escapable rawtext element</a></span></button>
@@ -754,6 +1007,10 @@ button.topics:active {
         <p>HTML namespace - text content,singleton: not enforced by parsing specification.
         <p>SVG namespace - can contain markup.
       </div>
+    </div>
+        <div class="item-back">
+            <p>Details here</p>
+        </div>
     </div>
 
 
@@ -869,7 +1126,40 @@ mathmlBtn.addEventListener("click", () => handleButtonClick(mathmlBtn));
 
   </script>
 
+<script>
+    let activeCard = null;
 
+    function flipCard(event, element) {
+        event.stopPropagation();
+
+        let grid = document.querySelector(".grid-container");
+        let cards = document.querySelectorAll(".item");
+
+        if (activeCard && activeCard !== element) {
+            activeCard.classList.remove("flipped");
+            activeCard = null;
+        }
+
+        element.classList.toggle("flipped");
+
+        if (element.classList.contains("flipped")) {
+            activeCard = element;
+            grid.classList.add("dimmed");
+            element.classList.remove("dimmed");
+        } else {
+            activeCard = null;
+            grid.classList.remove("dimmed");
+        }
+    }
+
+    document.addEventListener("click", function () {
+        if (activeCard) {
+            activeCard.classList.remove("flipped");
+            document.querySelector(".grid-container").classList.remove("dimmed");
+            activeCard = null;
+        }
+    });
+</script>
 
 
 </body>
