@@ -1,0 +1,195 @@
+<style>
+	* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: cover;
+  background: url(https://images.unsplash.com/photo-1498496294664-d9372eb521f3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+    no-repeat center center fixed;
+}
+
+.box {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 12px 12px 20px rgba(0, 0, 0, 0.2);
+  min-height: 400px;
+  width: 320px;
+  border: 1px solid rgba(243, 243, 243, 0.7);
+  border-radius: 8px;
+  backdrop-filter: blur(3px);
+  padding: 20px;
+}
+
+.upper-icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.upper-icons svg:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.profile img {
+  margin-top: 20px;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+h4 {
+  padding-top: 10px;
+  color: #1e293b;
+}
+
+p {
+  font-size: 12px;
+  color: #475569;
+}
+
+b { 
+color:#475569;
+
+ }
+
+.social-btns {
+  margin: 15px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.facebook {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  height: 45px;
+  width: 45px;
+  border-radius: 100px;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.facebook:hover {
+  background: white;
+}
+
+.down-btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  height: 35px;
+  width: 120px;
+  margin-left: 8px;
+  background: none;
+  outline: none;
+  border: none;
+  border: 1px solid rgba(243, 243, 243, 0.5);
+  cursor: pointer;
+}
+
+button:hover {
+  color: black;
+  background: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+button {
+  color: white;
+}
+
+.extra-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.extra-stats p {
+  font-size: 14px;
+}
+
+</style>
+<body>
+	<div class="box">
+
+  <div class="upper-icons">
+
+    <svg color="#696D7A" xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 0 24 24">
+      <path fill="currentColor" d="m10 18l-6-6l6-6l1.4 1.45L7.85 11H20v2H7.85l3.55 3.55L10 18Z" />
+    </svg>
+
+    <svg color="#696D7A" xmlns="http://www.w3.org/2000/svg" height="18" width="18px" viewBox="0 0 256 256">
+      <path fill="currentColor" d="M156 128a28 28 0 1 1-28-28a28 28 0 0 1 28 28Zm-28-52a28 28 0 1 0-28-28a28 28 0 0 0 28 28Zm0 104a28 28 0 1 0 28 28a28 28 0 0 0-28-28Z" />
+    </svg>
+
+  </div>
+
+  <div class="profile">
+    <img src="kabilan.png" alt="">
+  </div>
+
+  <div>
+    <h4>Kabilan S</h4>
+    <p>Security Research</p>
+    <b>Client-side security enthusiast | CTF player @ Infobahn | CVE-2024-32838</b>
+  </div>
+
+  <div class="social-btns">
+    <div class="facebook" onclick="window.open('https://www.linkedin.com/in/kabilan-s-4b8a90173/')">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"  width="24" height="24" viewBox="0 0 24 24"><path fill="#FFFFFF" d="M21,21H17V14.25C17,13.19 15.81,12.31 14.75,12.31C13.69,12.31 13,13.19 13,14.25V21H9V9H13V11C13.66,9.93 15.36,9.24 16.5,9.24C19,9.24 21,11.28 21,13.75V21M7,21H3V9H7V21M5,3A2,2 0 0,1 7,5A2,2 0 0,1 5,7A2,2 0 0,1 3,5A2,2 0 0,1 5,3Z" /></svg>
+    </div>
+
+    <div class="facebook" onclick="window.open('https://x.com/kabilan1290')">
+      <svg color="#1D9BF0" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23Z" />
+      </svg>
+    </div>
+
+    <div class="facebook" onclick="window.open('https://www.instagram.com/__kabi._/')">
+
+      <svg color="#F80303" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3Z" />
+      </svg>
+    </div>
+
+    <div class="facebook" onclick="window.open('https://www.youtube.com/@game0v3rrr/streams')">
+      <svg color="#FF0000" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+        <path fill="currentColor" d="m10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9c.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83c-.25.9-.83 1.48-1.73 1.73c-.47.13-1.33.22-2.65.28c-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44c-.9-.25-1.48-.83-1.73-1.73c-.13-.47-.22-1.1-.28-1.9c-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83c.25-.9.83-1.48 1.73-1.73c.47-.13 1.33-.22 2.65-.28c1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44c.9.25 1.48.83 1.73 1.73Z" />
+      </svg>
+    </div>
+  </div>
+
+
+    </div>
+  </div>
+
+</div>
+</body>
