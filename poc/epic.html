@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account [ THIS is not REAL EPIC ]</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      font-family: sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #000;
+      padding: 40px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+    }
+    .logo {
+      width: 40px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    select, input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 16px;
+      background-color: #121212;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: white;
+      font-size: 14px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row input {
+      flex: 1;
+    }
+    .checkbox {
+      display: flex;
+      align-items: flex-start;
+      margin: 10px 0;
+      font-size: 13px;
+      text-align: left;
+    }
+    .checkbox input {
+      margin-right: 10px;
+      margin-top: 3px;
+    }
+    .checkbox a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #1e1e1e;
+      border: none;
+      border-radius: 6px;
+      color: #aaa;
+      font-size: 14px;
+      cursor: not-allowed;
+    }
+    .footer {
+      font-size: 13px;
+      margin-top: 20px;
+    }
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" alt="Epic Games Logo">
+    <h2>Create Account</h2>
+    <form>
+      <label for="country">Country</label>
+      <select id="country">
+        <option>India</option>
+      </select>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email">
+
+      <div class="row">
+        <div>
+          <label for="first">First Name</label>
+          <input type="text" id="first">
+        </div>
+        <div>
+          <label for="last">Last Name</label>
+          <input type="text" id="last">
+        </div>
+      </div>
+
+      <label for="display">Display Name</label>
+      <input type="text" id="display">
+
+      <label for="password">Password</label>
+      <input type="password" id="password">
+
+      <div class="checkbox">
+        <input type="checkbox" id="news">
+        <label for="news">Send me news, surveys and special offers from Epic Games</label>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="tos">
+        <label for="tos">I have read and agree to the <a href="#">Terms of Service</a></label>
+      </div>
+
+      <button type="submit" disabled>Continue</button>
+
+      <div class="footer">
+        Already have an account? <a href="#">Sign in</a><br>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
