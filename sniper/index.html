@@ -505,6 +505,9 @@ button.topics:active {
 </style>
 <body>
 
+<script>
+parser = new DOMParser;
+</script>
 
 <script>
   function showTab(tabId) {
@@ -539,21 +542,25 @@ button.topics:active {
         <button class="namespace-btn" id="mathml-btn">MathML Namespace</button>
     </div>
   <div class="grid-container">
-    <div class="item red" onclick="flipCard(event, this)">
+<div class="item red" onclick="flipCard(event, this);console.log('︻デ┳═ーParsing <img>hi<p>hi');console.log(parser.parseFromString('<img>hi<p><hi>', 'text/html'));console.log('The <img> tag doesnt require a closing tag, whereas a <p> tag is automatically closed by the browser to correct the syntax. Elements like <img> that dont need closing tags are called void elements.')">
+
     <div class="item-front">
       <div class="content">
         <h2>img</h2>
     <button class="topics"><span class="hashtag"># </span><span class="keyword">HTML NAMESPACE</span></button>    <button class="topics alt1"><span class="hashtag"># </span><span class="keyword"><a href="https://html.spec.whatwg.org/#void-elements" style="text-decoration:none;color:white">void element</a></span></button>
-        <p>Typical HTML element which can carry XSS Payloads in Event handlers.</p>            
+        <p>Typical HTML element which can carry XSS Payloads in Event handlers.</p>  
+     
       </div>
 
     </div>
                   <div class="item-back">
             IMG tag is an void element,it does not require a closing tag while parsing!
+
+                 
         </div>
 </div>
 
-        <div class="item cyan2" onclick="flipCard(event, this)">
+        <div class="item cyan2" onclick="flipCard(event, this);console.log('︻デ┳═ーParsing <script><img></script>');console.log(parser.parseFromString('<script><img></script>', 'text/html'));console.log('The <script> element is a raw text element, meaning its contents are treated as plain text until the closing </script> tag is encountered.As a result, the <img> tag inside it is not parsed as an HTML element. Instead, it is treated as text content')">
         <div class="item-front">
       <div class="content">
         <h2>script</h2>
@@ -562,12 +569,12 @@ button.topics:active {
       </div>
     </div>
                       <div class="item-back">
-            <p>IMG tag is an void element it does not require a closing tag</p>
+            <p>SCRIPT tag is an rawtext element,it cannot contain other elements in between.</p>
         </div>
     </div>
 
 
-    <div class="item cyan" onclick="flipCard(event, this)">
+    <div class="item cyan" onclick="flipCard(event, this);console.log('︻デ┳═ーParsing <image><svg><image>');console.log(parser.parseFromString('<image><svg><image>', 'text/html'));console.log('The <image> tag is not valid in the HTML namespace hence become <img>, but it becomes a valid and functional element within the SVG namespace.')">
             <div class="item-front">
       <div class="content">
         <h2>image</h2>
@@ -576,7 +583,7 @@ button.topics:active {
       </div>
     </div>
                       <div class="item-back">
-            <p>Details here</p>
+            <p>it's treated as an unknown element unless used inside svg where it's part of SVG, not HTML.</p>
         </div>
     </div>
 
