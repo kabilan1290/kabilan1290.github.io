@@ -130,11 +130,11 @@ summary::marker {
     <p>HTML parsing is the process of reading an HTML document and converting it into a structured format that can be processed by a browser,Parsing a HTML document goes through the below stages !</p>
     <p><img src="stages.png" height=250px width=250px><br></p>
     <p><b style="color:#0ABABA;">Example:</b>&lt;!doctype html&gt;&lt;p&gt;helloworld
-    <p>Lets take the above example and lets have a look at how the parser go through each steps.<br><br>
-    <p>1.Bytes go over the network and a decoder will produce a stream of code points.
-    <p>2.The tokenizer walks through the stream of code points,character by character and emit tokens
-    <p>3.A doctype token,a start tag token(p) and a series of character tokens are generated.
-    <p>4.The tree builder take those tokens and builds the below dom.<br>
+    <p>Let's take this simple example and walk through how the parser processes it step by step, showing you exactly what happens behind the scenes when the browser encounters even the most basic HTML content.<br><br>
+    <p><b style="color:#0ABABA;">Step 1:</b> Bytes travel over the network and a decoder converts them into a stream of code points (the individual characters that make up the text). This is like translating a foreign language into something the browser can understand.</p>
+    <p><b style="color:#0ABABA;">Step 2:</b> The tokenizer carefully walks through this stream of code points, character by character, and identifies meaningful pieces called "tokens." It's like breaking down a sentence into individual words and punctuation marks.</p>
+    <p><b style="color:#0ABABA;">Step 3:</b> From our example, the tokenizer generates specific tokens: a doctype token (indicating this is HTML5), a start tag token for the &lt;p&gt; element, and a series of character tokens for "helloworld".</p>
+    <p><b style="color:#0ABABA;">Step 4:</b> The tree builder takes these tokens and constructs the final DOM structure. It's like building a family tree where each element has its proper place and relationships.</p>
     <pre style="text-align: left;">
 Document 
 	└── html 
@@ -143,19 +143,19 @@ Document
             		    └── #text: helloworld
     </pre>
     <img src="helloworld.png">
-    <p>A simple helloworld to be displayed ! it need to go through all the steps.<br>
+    <p>Even this simple "helloworld" text that you see on screen has to go through all these complex parsing stages before it can be displayed! This shows just how much work the browser does behind the scenes to make web pages work smoothly.<br>
     	<center>ref: <a href="https://htmlparser.info/">Idiosyncrasies of the HTML parser</a>
   </details>
   <details>
     <summary><b style="color:#0ABABA;">Content Type:</b></summary>
-    <p>The HTTP Content-Type representation header is used to indicate the original media type of a resource before any content encoding is applied.<br>
-    Imagine there is no content-type header? how will browser sniff the content?</p>
-    <p> Lets take a example by rendering a sweet &lt;h1&gt; heading tag and see the response?</p>
-    <img src='renderh1.png' height=300px width=600px><p> Anyway its expected to be render as html and it did ! no wonder...
-    <p>Lets take another example by rendering a &lt;h2&gt; tag !
-      <center><img src='renderh2.png' height=300px width=600px><p>what happens now? whys h2 tag is rendered as text :0
-        <p>This is because there is a set of rules/code that is in place which is reponsible for detection of a content.
-          <p>Below is the code of HTML sniffer.Basically it tells the browser the need for certain tags to be rendered as an html page.
+    <p>The HTTP Content-Type header is like a label that tells the browser exactly what type of content it's about to receive—whether it's HTML, an image, a PDF, or any other file format. This header acts as a crucial communication tool between the web server and your browser, ensuring that the content is interpreted and displayed correctly. But what happens when this important label is missing? How does the browser figure out what to do with the content it receives?</p>
+    <p>This is where <b style="color:#0ABABA;">content sniffing</b> comes into play—a fascinating process where the browser becomes a detective, examining the actual content to determine its type. Let's explore this through some practical examples that will show you exactly how this works in real-world scenarios.</p>
+    <p><b style="color:#0ABABA;">Example 1:</b> Let's start by testing what happens when we try to render a simple &lt;h1&gt; heading tag without a content-type header:</p>
+    <img src='renderh1.png' height=300px width=600px><p>As expected, the &lt;h1&gt; tag renders perfectly as HTML! This makes sense because &lt;h1&gt; is a common HTML element that browsers recognize immediately.</p>
+    <p><b style="color:#0ABABA;">Example 2:</b> Now let's try something more interesting—what happens when we test a &lt;h2&gt; tag?</p>
+    <center><img src='renderh2.png' height=300px width=600px><p>Surprisingly, the &lt;h2&gt; tag is rendered as plain text instead of HTML! This unexpected behavior reveals something important about how browsers work.</p>
+    <p>This difference in behavior occurs because browsers use a sophisticated set of rules and algorithms to "sniff" or detect content types when the Content-Type header is missing. These rules are implemented in code that acts like a security guard, checking for specific patterns and tags that indicate HTML content.</p>
+    <p>Below is the actual code from a browser's HTML sniffer. This code tells the browser which specific tags should trigger HTML rendering when no content-type is specified:</p>
 <pre class="code-block">
 // Our HTML sniffer differs slightly from Mozilla.  For example, Mozilla will
 // decide that a document that begins &#x22;&#x3C;!DOCTYPE SOAP-ENV:Envelope PUBLIC/&#x22; is
@@ -211,15 +211,15 @@ static bool SniffForHTML(base::StringPiece content,
 }
 </pre>
   <h1><p> Quick Question : </h1>
-    <p>If no content type is defined, are only the HTML elements/tags listed below responsible for rendering HTML, or can rendering be forced using other methods or elements?
+    <p>Based on the code above, if no content type is defined, are only the HTML elements/tags listed below responsible for rendering HTML, or can rendering be forced using other methods or elements?</p>
       <pre class="code-block">
         &lt;!DOCTYPE html&gt;,&lt;script&gt;,&lt;html,&lt;!--&gt;,&lt;head&gt;,&lt;iframe&gt;,&lt;h1&gt;,&lt;div&gt;,&lt;font&gt;,&lt;table&gt;,&lt;a&gt;,&lt;style&gt;,&lt;title&gt;,&lt;body&gt;,&lt;br&gt;,&lt;p&gt;
       </pre>
       <img src='picture.jpg' height=300px width=600px>
-<p>Interestingly the picture element works ! but it is not defined on the deciding sniffer file, then how?
-<p> Since the picture tag starts with 'p' and the MAGIC_HTML_TAG(&#x22;p&#x22;) checks for p,anything starts with p 'picture','progress' tags will work and make the content render as HTML..
-  <p>I came to know about this behaviour/working through a challenge from Dreamhack wargame <a href="https://dreamhack.io/wargame/challenges/1787">Small File Storage</a> ! Thanks to my friends <b style="color:#0ABABA;">0xAlessandro</b> and <b style="color:#0ABABA;">Yuu</b>.
-<p>To learn more about this visit <a href="https://aszx87410.github.io/beyond-xss/en/ch5/mime-sniffing/">Mime Sniffing</a>
+<p><b style="color:#0ABABA;">Interesting Discovery:</b> The picture element works perfectly! But wait—it's not explicitly defined in the sniffer code above. So how does it work?</p>
+<p>The answer lies in how the sniffer algorithm operates. Since the &lt;picture&gt; tag starts with the letter 'p' and the code includes <code>MAGIC_HTML_TAG(&#x22;p&#x22;)</code>, any tag that begins with 'p' (like 'picture', 'progress', 'param', etc.) will trigger HTML rendering. This is a clever but potentially exploitable feature of the content sniffing mechanism.</p>
+  <p>I discovered this fascinating behavior while working on a challenge from the Dreamhack wargame <a href="https://dreamhack.io/wargame/challenges/1787">Small File Storage</a>! Special thanks to my friends <b style="color:#0ABABA;">0xAlessandro</b> and <b style="color:#0ABABA;">Yuu</b> for the insights.</p>
+<p>To dive deeper into this topic, visit <a href="https://aszx87410.github.io/beyond-xss/en/ch5/mime-sniffing/">Mime Sniffing</a> for a comprehensive exploration of content type detection mechanisms.
 
   </details>
   <details>
