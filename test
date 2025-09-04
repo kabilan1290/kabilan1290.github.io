@@ -1,0 +1,71 @@
+local wezterm = require("wezterm")
+local config = wezterm.config_builder()
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+-- Set properties on the config object
+config.automatically_reload_config = true
+config.enable_tab_bar = true
+config.window_background_image = '/Users/kabilan-14748/Downloads/fish.png'
+config.window_background_image_hsb = {
+  -- Darken the background image by reducing it to 1/3rd
+  brightness = 1,
+
+  -- You can adjust the hue by scaling its value.
+  -- a multiplier of 1.0 leaves the value unchanged.
+  hue =6,
+
+  -- You can adjust the saturation also.
+  saturation = 1,
+
+}
+
+
+tabline.setup({
+  options = {
+    icons_enabled = true,
+    theme = 'hardhacker',
+    tabs_enabled = true,
+    theme_overrides = {},
+    section_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+    component_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+    tab_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+  },
+  sections = {
+    tabline_a = { 'mode' },
+    tabline_b = { 'workspace' },
+    tabline_c = { ' ' },
+    tab_active = {
+      'index',
+      { 'parent', padding = 0 },
+      '/',
+      { 'cwd', padding = { left = 0, right = 1 } },
+      { 'zoomed', padding = 0 },
+    },
+    tab_inactive = { 'index', { 'process', padding = { left = 0, right = 1 } } },
+    tabline_x = { 'ram', 'cpu' },
+    tabline_y = { 'datetime', 'battery' },
+    tabline_z = { 'domain' },
+  },
+  extensions = {},
+})
+
+
+config.window_decorations = "RESIZE"
+config.default_cursor_style = "BlinkingBar"
+config.color_scheme = "rebecca"  -- Ensure this is a valid scheme o installed
+config.colors = {
+  foreground = "#a277ff", -- A nice purple tone, feel free to change to any hex code
+}
+config.font = wezterm.font("JetBrains Mono", { weight = "Bold" })
+config.font_size = 12.5
+config.window_background_opacity = 0.9
+
+return config
