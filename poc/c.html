@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Address Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .max-w-preview { max-width: 500px; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <main class="w-full max-w-preview bg-white rounded-2xl shadow-lg p-8">
+    <header class="mb-6">
+      <h1 class="text-2xl font-semibold">Address Form</h1>
+      <p class="text-sm text-gray-500">Enter your information</p>
+    </header>
+
+    <form id="cardForm" class="grid grid-cols-1 gap-4" novalidate>
+      <input name="cardNumber" type="text" inputmode="numeric" required placeholder="Name"
+             pattern="\d{13,19}" title="Enter 13 to 19 digits"
+             class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none p-2" />
+      <input name="cardName" type="text" required placeholder=""
+             class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none p-2" />
+      <div class="grid grid-cols-2 gap-4">
+        <input name="expDate" type="text" required placeholder="State"
+               pattern="(0[1-9]|1[0-2])\/(\d{2})"
+               title="Enter expiration as MM/YY"
+               class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none p-2" />
+
+        <input name="cvv" type="text" inputmode="numeric" required placeholder="Pincode"
+               pattern="\d{3,4}"
+               title="Enter 3 or 4 digits"
+               class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none p-2" />
+      </div>
+
+      <input name="nickname" type="text" placeholder="State"
+             class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none p-2" />
+
+      <div class="flex items-center justify-between gap-4 mt-2">
+        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+          Save card
+        </button>
+        <button type="button" id="clearBtn" class="px-3 py-2 rounded-lg border border-gray-200 text-sm hover:bg-gray-50">Clear</button>
+      </div>
+    </form>
+
+    <section id="result" class="mt-6 hidden bg-gray-50 rounded-lg p-4 border border-dashed border-gray-200">
+      <h2 class="text-sm font-medium mb-2">Form output (preview)</h2>
+      <pre id="jsonOut" class="text-xs text-gray-700 whitespace-pre-wrap"></pre>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('cardForm');
+    const result = document.getElementById('result');
+    const jsonOut = document.getElementById('jsonOut');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function showOutput(data) {
+      jsonOut.textContent = JSON.stringify(data, null, 2);
+      result.classList.remove('hidden');
+      result.scrollIntoView({behavior: 'smooth'});
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      payload.cardNumber = payload.cardNumber.replace(/\s+/g, '').replace(/\D/g, '');
+      payload.cvv = payload.cvv.replace(/\D/g, '');
+
+      showOutput(payload);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      form.reset();
+      result.classList.add('hidden');
+      jsonOut.textContent = '';
+    });
+  </script>
+</body>
+</html>
