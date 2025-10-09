@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Iframe Loader</title>
+  <style>
+    html, body, iframe {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="contentFrame"></iframe>
+
+  <script>
+    // Get URL parameter from query string
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("url");
+
+    // Set iframe src if URL is provided
+    if (url) {
+      document.getElementById("contentFrame").src = url;
+    } else {
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:20%;'>No URL parameter provided.</h2>";
+    }
+  </script>
+</body>
+</html>
