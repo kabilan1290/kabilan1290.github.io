@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Paste Block Demo</title>
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #6b7280;
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --border: #e5e7eb;
+      --shadow: 0 10px 30px rgba(0,0,0,0.10);
+      --radius: 12px;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 900px;
+      padding: 48px 20px 96px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    header .brand .logo {
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      background: #e0e7ff;
+      color: #4338ca;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 24px;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 40px 0 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-1 {
+      grid-template-columns: 1fr;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin: 8px 0 6px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      background: #fff;
+    }
+
+    input:focus {
+      border-color: #a5b4fc;
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+    }
+
+    .submit {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .submit:hover { background: var(--primary-dark); }
+
+    /* Modal */
+    .overlay {
+      position: fixed; inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(15, 18, 28, 0.35);
+      backdrop-filter: blur(2px);
+      z-index: 1000;
+    }
+    .overlay.show { display: grid; }
+
+    .modal {
+      width: min(520px, calc(100% - 32px));
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .modal .badge {
+      width: 42px; height: 42px;
+      display: grid; place-items: center;
+      border-radius: 12px;
+      margin: 8px auto 10px;
+      background: linear-gradient(135deg, #a78bfa, #22d3ee);
+      color: white;
+      font-size: 22px;
+    }
+
+    .modal h2 {
+      text-align: center;
+      margin: 6px 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+
+    .notice {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px 14px;
+      color: var(--muted);
+      text-align: center;
+      margin: 0 6px 16px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding: 4px 6px 6px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn.secondary {
+      background: #111827;
+      color: #fff;
+    }
+    .btn.secondary:hover { background: #0b1220; }
+
+    .btn.primary {
+      background: #635bff;
+      color: #fff;
+    }
+    .btn.primary:hover { background: #5148ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">TF</div>
+        <div>TechFlow Solutions</div>
+      </div>
+      <nav>
+        <a href="#" aria-current="page">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Book a Meeting</h1>
+      <p>Schedule a consultation with our experts to discuss your project.</p>
+    </section>
+
+    <section class="card">
+      <form id="contactForm" novalidate>
+        <div class="grid">
+          <div>
+            <label for="firstName">First Name</label>
+            <input id="firstName" name="firstName" autocomplete="given-name" />
+          </div>
+          <div>
+            <label for="lastName">Last Name</label>
+            <input id="lastName" name="lastName" autocomplete="family-name" />
+          </div>
+        </div>
+
+        <div class="grid grid-1">
+          <div>
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" autocomplete="email" />
+          </div>
+        </div>
+
+        <button class="submit" type="submit">Submit</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal">
+      <div class="badge" aria-hidden="true">🔥</div>
+      <h2 id="modalTitle">Paste Blocked</h2>
+      <p id="modalDesc" class="notice">Pasting text has been blocked based on policy</p>
+      <div class="actions">
+        <button id="exceptionBtn" class="btn secondary">REQUEST FOR EXCEPTION</button>
+        <button id="understandBtn" class="btn primary">I UNDERSTAND</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const overlay = document.getElementById('overlay');
+      const openGoogle = () => window.open('https://www.google.com', '_blank', 'noopener');
+
+      function showModal() {
+        overlay.classList.add('show');
+      }
+      function hideModal() {
+        overlay.classList.remove('show');
+      }
+
+      // Attach to all inputs inside the form
+      const form = document.getElementById('contactForm');
+      form.querySelectorAll('input').forEach((el) => {
+        el.addEventListener('paste', (e) => {
+          e.preventDefault();           // block the paste
+          showModal();                  // show the prompt
+        });
+      });
+
+      // Buttons both open google.com; also close the modal
+      document.getElementById('exceptionBtn').addEventListener('click', () => {
+        hideModal();
+        openGoogle();
+      });
+      document.getElementById('understandBtn').addEventListener('click', () => {
+        hideModal();
+        openGoogle();
+      });
+
+      // Close modal if overlay background is clicked
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) hideModal();
+      });
+
+      // Escape key to dismiss
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideModal();
+      });
+    })();
+  </script>
+</body>
+</html>
