@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MediaSession Demo: ActionsChanged</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    button { margin-right: 8px; margin-bottom: 8px; }
+    pre { background: #f0f0f0; padding: 10px; max-height: 200px; overflow-y: scroll; }
+  </style>
+</head>
+<body>
+  <h2>MediaSession Flow Demo</h2>
+  <p>First click "Start Playback", then open Chrome's global media control panel (toolbar music note / system media UI), and then click the buttons below to enable/disable next-track.</p>
+  <button id="start">Start</button>
+  <button id="enable-next" disabled>Enable nexttrack</button>
+  <button id="disable-next" disabled>Disable nexttrack</button>
+  <pre id="log"></pre>
+
+  <script>
+    const L = msg => {
+      const line = `${new Date().toLocaleTimeString()} — ${msg}`;
+      const p = document.getElementById('log');
+      p.textContent = line + '\n' + p.textContent;
+      console.log(msg);
+    };
+
+    const audio = new Audio('sample1.mp3');
+    audio.loop = true;
+    audio.volume = 0.5;
+
+    document.getElementById('start').onclick = async () => {
+      try {
+        await audio.play();
+        L('audio.play() succeeded — now playing');
+      } catch (e) {
+        L('audio.play() failed: ' + e);
+        return;
+      }
+
+      if (!navigator.mediaSession) {
+        L('navigator.mediaSession is not available');
+        return;
+      }
+
+      navigator.mediaSession.playbackState = 'playing';
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Sample Audio',
+        artist: 'Demo',
+        album: 'Demo Album',
+        artwork: [
+          { src: 'https://via.placeholder.com/96', sizes: '96x96', type: 'image/png' }
+        ]
+      });
+      L('Set playbackState and metadata');
+
+      navigator.mediaSession.setActionHandler('play', () => L('handler: play'));
+      navigator.mediaSession.setActionHandler('pause', () => L('handler: pause'));
+      L('Set play/pause handlers');
+
+      document.getElementById('enable-next').disabled = false;
+      document.getElementById('disable-next').disabled = false;
+    };
+
+    document.getElementById('enable-next').onclick = () => {
+      navigator.mediaSession.setActionHandler('nexttrack', () => L('handler: nexttrack'));
+      L('Set nexttrack handler — should trigger NotifyActionChange → Browser');
+    };
+    document.getElementById('disable-next').onclick = () => {
+      navigator.mediaSession.setActionHandler('nexttrack', null);
+      L('Set nexttrack handler = null — should trigger Disable');
+    };
+  </script>
+</body>
+</html>
