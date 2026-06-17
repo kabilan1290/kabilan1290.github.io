@@ -1,3 +1,20 @@
-<html><head><body><script>window.open('zoommtg://zoom.us/join?confno=89015048494&pwd=s6UgNX')
+<html><head><body>
+  
+<script>
+function downloadBlob(content, filename, mimeType = 'text/plain') {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
 
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url); // free memory
+}
+
+// Usage
+downloadBlob('Hello, world!', 'pwni.txt', 'text/plain');
 </script></body></head></html>
